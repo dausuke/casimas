@@ -1,0 +1,6 @@
+#basic認証
+.htaccess
+.htpasswd
+
+#.env
+.env

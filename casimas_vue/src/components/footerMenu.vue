@@ -1,0 +1,53 @@
+<template>
+    <div class="footer-container">
+        <div class="container-fluid ">
+            <footer class="row m-0 fixed-bottom justify-content-center footer-menu">
+                <div class="pr-3 d-flex align-items-center justify-content-between footer-menu__content">
+                    <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
+                        <p @click="$emit('changePage', 'home')">ホーム</p>
+                    </div>
+                    <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
+                        <p @click="$emit('changePage', 'rule')">ルール</p>
+                    </div>
+                    <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
+                        <p @click="$emit('changePage', 'favorite')">いいね</p>
+                    </div>
+                    <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
+                        <p @click="$emit('changePage', 'notice')">通知</p>
+                    </div>
+                    <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
+                        <p @click="$emit('changePage', 'mypage')">マイページ</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    data() {
+        return {};
+    },
+};
+</script>
+<style scoped>
+.footer-container {
+    padding-top: 54px;
+}
+.footer-menu{
+    background-color: white;
+    z-index: 15;
+    box-shadow: rgb(0 0 0 / 18%) 0px -1px 3px;
+}
+.footer-menu__content p{
+    margin-top: 1rem;
+}
+@media screen and (max-width: 480px) {
+    .footer-menu__content p{
+        font-size: 12px;
+    }
+    .footer-container {
+    padding-top: 47px;
+}
+ }
+</style>
