@@ -14,7 +14,7 @@ $dotenv->load();
 
 //関数読み込み
 include("functions.php");
-cors_config();
+//cors_config();
 
 //DBの設定(認証用)
 $db_host = $_ENV['DB_HOST'];

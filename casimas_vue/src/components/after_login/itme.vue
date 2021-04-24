@@ -91,8 +91,11 @@
                     <button type="button" class="btn btn-outline-secondary" @click="modalClose">キャンセル</button>
                 </footer>
             </b-modal>
-            <div class="row mt-3 m-0 w-100 justify-content-center">
-                <button type="button" class="btn btn-success" v-b-modal.modal-center1>レンタル希望を送る</button>
+            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area">
+                <button type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center1>
+                    レンタル希望を送る
+                </button>
+                <button type="button" class="btn btn-success" id="editBtn">編集する</button>
             </div>
             <b-modal id="modal-center2" centered title="商品をレンタルしました" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__succes_rental">
@@ -126,6 +129,7 @@ export default {
                 plan: null,
                 price: null,
             },
+            userid: {},
             errorMessage: null,
         };
     },
@@ -149,6 +153,8 @@ export default {
 
             await myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
                 self.itemData = res.data;
+                //console.log(res.data);
+                console.log(this.userid);
             });
         },
         getSeller: function() {
@@ -164,7 +170,7 @@ export default {
 
             myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
                 self.sellerHeight = res.data.height;
-                console.log(res.data);
+                //console.log(res.data);
             });
         },
         getPhoto: function() {
@@ -211,6 +217,7 @@ export default {
     created: function() {
         const router = this.$route.query;
         this.itemId = router.itemId;
+        this.userid = this.$store.state.auth;
     },
     mounted: function() {
         this.getAllData(this.itemId);
