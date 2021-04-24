@@ -95,7 +95,7 @@
                 <button type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center1>
                     レンタル希望を送る
                 </button>
-                <button type="button" class="btn btn-success" id="editBtn">編集する</button>
+                <!-- <button type="button" class="btn btn-success" id="editBtn">編集する</button> -->
             </div>
             <b-modal id="modal-center2" centered title="商品をレンタルしました" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__succes_rental">

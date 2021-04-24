@@ -3,7 +3,7 @@
         <mainHeader></mainHeader>
         <main class="container-fulid user-content area">
             <div class="user-content__home">
-                <h2 class="pt-3">全てのカテゴリー</h2>
+                <h2 class="pt-3">全てのカテゴリーあああ</h2>
                 <div class="row w-100 m-0">
                     <div class="item-area w-100 m-0 p-0">
                         <ul class=" row d-flex justify-content-around m-0 p-0 w-100">

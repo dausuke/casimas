@@ -10,7 +10,7 @@ import rule from '../views/after_login/rule';
 import sell from '../views/after_login/sell';
 import MyPage from '../views/after_login/mypage';
 import notice from '../views/after_login/notice';
-import item from '../components/after_login/itme';
+import item from '../components/after_login/item';
 import category from '../views/after_login/category';
 
 //マイページ内
@@ -62,7 +62,7 @@ const routes = [
         name: 'MyPage',
         component: MyPage,
     },
-        {
+    {
         //カテゴリー
         path: '/category',
         name: 'category',
