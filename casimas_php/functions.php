@@ -6,7 +6,9 @@ function connect_to_db()
     $db_host = $_ENV['DB_HOST'];
     $db_name = $_ENV['DB_NAME'];
     $db_pass = $_ENV['DB_PASS'];
-    $dbn='mysql:dbname='.$db_name.';charset=utf8;port=36959;host='.$db_host;
+    //$dbn='mysql:dbname='.$db_name.';charset=utf8;port=37206;host='.$db_host;
+    $dbn = 'mysql:host='.$db_host.'; dbname='.$db_name.'; charset=utf8;port=3306; unix_socket=/tmp/mysql.sock';
+
     $user=$db_name;
     $pwd=$db_pass;
     // $dbn = 'mysql:dbname=casimas;charset=utf8;port=3306;host=localhost';
@@ -25,7 +27,7 @@ function connect_to_db()
 //CORSの設定
 function cors_config()
 {
-    header('Access-Control-Allow-Origin:   http://192.168.10.113:8080');
+    header('Access-Control-Allow-Origin:   http://localhost:8080');
     header('Access-Control-Allow-Headers: Origin, X-Requested-With, X-CSRF-Token, Content-Type, Accept');
     header('Access-Control-Allow-Credentials: true');
 }

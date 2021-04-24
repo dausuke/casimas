@@ -9,6 +9,7 @@
 import topHeader from '../components/topPageHeader';
 import registerAuth from '../components/registerAuth';
 import registerDitail from '../components/registerDitail';
+import methods from '../methods';
 
 export default {
     name: 'register',
@@ -41,12 +42,19 @@ export default {
     methods: {
         submit: function(userDitailData) {
             this.userData.userDitailData = userDitailData;
+            const baseUrl = methods.apiUrl.url;
             const myHttpClient = this.axios.create({
                 xsrfHeaderName: 'X-CSRF-Token',
                 withCredentials: true,
             });
             const user_data = new URLSearchParams();
-            const birthday = String(this.userData.userDitailData.birthday_y)+'年'+String(this.userData.userDitailData.birthday_m)+'月'+String(this.userData.userDitailData.birthday_d)+'日';
+            const birthday =
+                String(this.userData.userDitailData.birthday_y) +
+                '年' +
+                String(this.userData.userDitailData.birthday_m) +
+                '月' +
+                String(this.userData.userDitailData.birthday_d) +
+                '日';
             console.log(birthday);
             user_data.append('first_name', this.userData.firstName);
             user_data.append('last_name', this.userData.lastName);
@@ -67,7 +75,7 @@ export default {
             user_data.append('height', this.userData.userDitailData.sellerData.height);
             user_data.append('token', this.token);
             myHttpClient
-                .post('http://localhost/casimas/casimas_php/auth.php', user_data)
+                .post(baseUrl+'auth.php', user_data)
                 .then(function(res) {
                     console.log(res);
                 })

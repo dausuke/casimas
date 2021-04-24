@@ -1,15 +1,50 @@
 <?php
 ini_set('display_errors', 1);
 
+use Illuminate\Database\Capsule\Manager as Capsule;
+
+require './vendor/autoload.php';
+
+$capsule = new Capsule;
+
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+//DBの設定
+// $db_host = $_ENV['DB_HOST'];
+// $db_name = $_ENV['DB_NAME'];
+// $db_pass = $_ENV['DB_PASS'];
+// $capsule->addConnection([
+//     'driver'    => 'mysql',
+//     'host'      => $db_host,
+//     'database'  => $db_name,
+//     'username'  => $db_name,
+//     'password'  => $db_pass,
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ]);
+$capsule->addConnection([
+    'driver'    => 'mysql',
+    'host'      => 'localhost',
+    'database'  => 'casimas',
+    'username'  => 'root',
+    'password'  => '',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+]);
+
 //関数読み込み
 include("functions.php");
 cors_config();
+
+$capsule->bootEloquent();
 
 // var_dump($_POST);
 // exit();
 function get_all_item()
 {
     $pdo = connect_to_db();
+
     //商品情報
     $sql = 'SELECT item.item_id ,seller_id,item_name,item_introductoin,brand,purchase_judg, price_1m,price_1w,price_purchase,category_content,photo1,photo2,photo3,photo4 FROM (((item LEFT OUTER JOIN price ON item.item_id = price.item_id) LEFT OUTER JOIN category ON item.category_id = category.category_id ) LEFT OUTER JOIN photo ON item.item_id = photo.item_id)';
     $stmt = $pdo->prepare($sql);

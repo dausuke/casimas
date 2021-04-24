@@ -73,6 +73,8 @@
 </template>
 <script>
 import topHeader from '../components/topPageHeader';
+import methods from '../methods';
+
 export default {
     name: 'login',
     components: {
@@ -93,6 +95,7 @@ export default {
     methods: {
         submitForm: function() {
             const self = this;
+            const baseUrl = methods.apiUrl.url;
             const myHttpClient = this.axios.create({
                 xsrfHeaderName: 'X-CSRF-Token',
                 withCredentials: true,
@@ -102,7 +105,7 @@ export default {
             user_data.append('pass', this.useraData.pass);
             user_data.append('token', this.useraData.token);
             myHttpClient
-                .post('http://localhost/casimas/casimas_php/auth.php', user_data)
+                .post(baseUrl+'auth.php', user_data)
                 .then(function(res) {
                     console.log(res.data);
                     self.responsData = res.data;

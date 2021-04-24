@@ -224,6 +224,7 @@
     </div>
 </template>
 <script>
+import methods from '../../methods';
 export default {
     data() {
         return {
@@ -319,6 +320,8 @@ export default {
             }
         },
         submititem: function() {
+                        const baseUrl = methods.apiUrl.url;
+
             const upItemData = new FormData();
             if (this.itemData.photo[0]) {
                 upItemData.append('photo1', this.itemData.photo[0]);
@@ -345,7 +348,7 @@ export default {
             }
 
             this.axios
-                .post('http://localhost/casimas/casimas_php/submit_item.php', upItemData, {
+                .post(baseUrl+'submit_item.php', upItemData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },

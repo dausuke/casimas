@@ -54,6 +54,7 @@
                     </li>
                 </ul>
             </div>
+            <button v-if="userId.sellerid" class="btn btn-success p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
         </main>
         <footerMenu @changePage="changePage"></footerMenu>
     </div>
@@ -116,7 +117,7 @@ export default {
         },
         categoryFilter: async function() {
             await this.getItem();
-            const self = this
+            const self = this;
             this.item.forEach(function(v) {
                 switch (v.category_content) {
                     case '[出品者身長]150cm~159cm':
@@ -139,6 +140,22 @@ export default {
 </script>
 
 <style scoped>
+.sell-btn {
+    height: 65px;
+    width: 65px;
+    border-radius: 50%;
+    font-weight: bold;
+    position: fixed;
+    bottom: 60px;
+    right: 40px;
+}
+.sell-btn a {
+    color: white;
+    text-decoration: none;
+}
+.sell-btn a:hover {
+    color: white;
+}
 .category p {
     margin-left: 1rem;
 }

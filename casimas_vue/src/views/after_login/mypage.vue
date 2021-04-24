@@ -24,7 +24,7 @@
                                 <li class="nav-item">
                                     <router-link to="/itemIsRental" class="p-3 nav-link">レンタル中</router-link>
                                 </li>
-                                <li class="nav-item">
+                                <li class="nav-item" v-if="data.isSeller">
                                     <router-link to="/itemSelling" class="p-3 nav-link">出品中</router-link>
                                 </li>
                                 <li class="nav-item">
@@ -44,13 +44,7 @@ import mainHeader from '../../components/mainHeader';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
 import mypageContent from '../../components/after_login/mypageContent';
-// import itemIsRentalContent from '../../components/after_login/itemIsRental';
-// import itemSellingContent from '../../components/after_login/itemSelling';
-// import itemDraftContent from '../../components/after_login/itemDraft';
-// import itemSoldContent from '../../components/after_login/itemSold';
-// import profileContent from '../../components/after_login/profile';
-// import accountContent from '../../components/after_login/account';
-// import transferContent from '../../components/after_login/transter';
+
 export default {
     components: {
         mainHeader,

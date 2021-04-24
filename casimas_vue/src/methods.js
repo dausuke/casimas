@@ -21,7 +21,7 @@ const changeUserPage = (resData, router) => {
 };
 const apiUrl = {
     url:'http://localhost/casimas/casimas_php/',
-    //url:'../../casimas_php/'
+    // url:'../../casimas_php/'
 }
 
 export default { changeUserPage,apiUrl};

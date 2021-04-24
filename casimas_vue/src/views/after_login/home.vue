@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-success p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
+            <button v-if="data.sellerid" class="btn btn-success p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
         </main>
         <footerMenu @changePage="changePage"></footerMenu>
     </div>

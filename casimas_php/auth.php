@@ -17,27 +17,27 @@ include("functions.php");
 cors_config();
 
 //DBの設定(認証用)
-// $db_host = $_ENV['DB_HOST'];
-// $db_name = $_ENV['DB_NAME'];
-// $db_pass = $_ENV['DB_PASS'];
-// $capsule->addConnection([
-//     'driver'    => 'mysql',
-//     'host'      => $db_host,
-//     'database'  => $db_name,
-//     'username'  => $db_name,
-//     'password'  => $db_pass,
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ]);
+$db_host = $_ENV['DB_HOST'];
+$db_name = $_ENV['DB_NAME'];
+$db_pass = $_ENV['DB_PASS'];
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'casimas',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $db_host,
+    'database'  => $db_name,
+    'username'  => $db_name,
+    'password'  => $db_pass,
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ]);
+// $capsule->addConnection([
+//     'driver'    => 'mysql',
+//     'host'      => 'localhost',
+//     'database'  => 'casimas',
+//     'username'  => 'root',
+//     'password'  => '',
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ]);
 
 $capsule->bootEloquent();
 
@@ -60,8 +60,7 @@ function login($user_data)
         $pdo = connect_to_db();
 
         // データ取得SQL作成
-        $sql = 'SELECT userid,seller_id FROM user_data LEFT OUTER JOIN (SELECT * FROM seller_info GROUP BY seller_id ) AS seller_data ON user_data.userid = seller_data.seller_id WHERE userid=:userid AND is_deleted=0';
-
+        $sql = 'SELECT userid,seller_id,nickname FROM user_data LEFT OUTER JOIN (SELECT * FROM seller_info GROUP BY seller_id ) AS seller_data ON user_data.userid = seller_data.seller_id WHERE userid=:userid AND is_deleted=0';
 
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':userid', $login_user['id'], PDO::PARAM_STR);

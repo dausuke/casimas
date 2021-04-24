@@ -49,6 +49,8 @@ export default {
     },
     mounted: function() {
         const self = this;
+        const baseUrl = methods.apiUrl.url;
+
         const myHttpClient = this.axios.create({
             xsrfHeaderName: 'X-CSRF-Token',
             withCredentials: true,
@@ -58,7 +60,7 @@ export default {
         userId.append('token', this.token);
 
         myHttpClient
-            .post('http://localhost/casimas/casimas_php/mypage.php', userId)
+            .post(baseUrl + 'mypage.php', userId)
             .then(function(res) {
                 console.log(res);
                 self.userData = res.data;
