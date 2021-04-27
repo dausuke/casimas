@@ -44,7 +44,7 @@ export default {
     props: {
         userId: String,
     },
-    mounted: async function() {
+    beforeMount: async function() {
         await this.getUser();
         // if (this.userData.profile_img != null) {
         document.getElementById('profileImg').style.backgroundImage = 'url(' + this.apiUrl + this.userData.profile_img + ')';

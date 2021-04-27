@@ -11,6 +11,7 @@ import sell from '../views/after_login/sell';
 import MyPage from '../views/after_login/mypage';
 import notice from '../views/after_login/notice';
 import item from '../components/after_login/item';
+import editItem from '../components/after_login/editItem';
 import category from '../views/after_login/category';
 
 //マイページ内
@@ -79,6 +80,12 @@ const routes = [
         path: '/item',
         name: 'item',
         component: item,
+    },
+    {
+        //商品編集ページ
+        path: '/editItem',
+        name: 'editItem',
+        component: editItem,
     },
 
     //マイページ内

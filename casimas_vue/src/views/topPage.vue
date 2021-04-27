@@ -2,7 +2,6 @@
     <div class="Top">
         <topHeader />
         <HelloWorld />
-        <p></p>
     </div>
 </template>
 

@@ -8,17 +8,18 @@
                     <h2 class="font-weight-bold container-title mt-3">レンタル中の商品</h2>
                 </div>
                 <div class="row w-100 m-0 justify-content-center">
-                    <div class="item-area">
-                        <ul class=" row d-flex justify-content-around m-0 p-0 col-12">
+                    <div class="item-area w-100">
+                        <ul class=" row d-flex justify-content-around m-0 p-0 w-100">
                             <li class="col-12 p-3" v-for="(content, index) in rentaledItem" :key="index">
-                                <div class="col-12 d-flex">
+                                <div class="col-12 d-flex" @click="itemPage(content.item_id)">
                                     <div class="col-4 m-0 p-0 d-flex justify-content-center align-items-center flex-column">
                                         <div :id="'rentalItemImg' + index" class="m-0 rental-item-img"></div>
-                                        <!--  -->
                                     </div>
-                                    <div class="col-6 d-flex align-items-end flex-column">
-                                        <p class="p-0 col-12">{{ content.item_name }}</p>
-                                        <p class="p-0 col-12">返却日：{{ content.return_date }}</p>
+                                    <div class="col-8 d-flex align-content-end flex-column">
+                                        <span class="p-0 m-0 col-12">
+                                            <p class="text-left">{{ content.item_name }}</p>
+                                            <p class="text-left">返却日：{{ content.return_date }}</p>
+                                        </span>
                                     </div>
                                 </div>
                             </li>
@@ -51,7 +52,7 @@ export default {
     created: function() {
         this.userId = this.$store.state.auth;
     },
-    mounted: async function() {
+    beforeMount: async function() {
         const self = this;
         const baseUrl = methods.apiUrl.url;
         const myHttpClient = this.axios.create({
@@ -74,6 +75,9 @@ export default {
         changePage: function(request) {
             const router = this.$router;
             methods.changeUserPage(request, router);
+        },
+        itemPage: function(itemId) {
+            this.$router.push({ name: 'item', query: { itemId: itemId } });
         },
     },
 };

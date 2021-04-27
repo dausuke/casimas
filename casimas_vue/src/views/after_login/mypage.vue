@@ -24,7 +24,7 @@
                                 <li class="nav-item">
                                     <router-link to="/itemIsRental" class="p-3 nav-link">レンタル中</router-link>
                                 </li>
-                                <li class="nav-item" v-if="data.isSeller">
+                                <li class="nav-item" v-if="data.sellerid">
                                     <router-link to="/itemSelling" class="p-3 nav-link">出品中</router-link>
                                 </li>
                                 <li class="nav-item">
@@ -60,7 +60,7 @@ export default {
     created: function() {
         this.data = this.$store.state.auth;
     },
-    mounted:function(){
+    beforeMount:function(){
             const self = this;
             const baseUrl = methods.apiUrl.url;
             this.url = baseUrl;

@@ -47,7 +47,7 @@ export default {
     created: function() {
         this.data = this.$store.state.auth;
     },
-    mounted: function() {
+    beforeMount: function() {
         const self = this;
         const baseUrl = methods.apiUrl.url;
 
@@ -80,7 +80,7 @@ export default {
             });
             const userUpdateData = new URLSearchParams();
             userUpdateData.append('user_id', this.data.userid);
-            userUpdateData.append('token', this.token);
+            userUpdateData.append('token', 'updade_profile');
             userUpdateData.append('nickname', this.userData.nickname);
             userUpdateData.append('introduction', this.userData.introduction);
 

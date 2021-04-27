@@ -74,7 +74,7 @@ function rental($rental_data)
             $return_date = date("Y/m/d", strtotime("1 week"));
         }
 
-        $sql = 'INSERT INTO rental_state(rental_state_id,userid,item_id,transaction_id,return_date)VALUES(null,:userid,:item_id,:transaction_id,:return_date)';
+        $sql = 'INSERT INTO rental_state(rental_state_id,rental_user_id,item_id,transaction_id,return_date)VALUES(null,:userid,:item_id,:transaction_id,:return_date)';
 
         $stmt = $pdo->prepare($sql);
 
@@ -91,7 +91,7 @@ function is_rentaled($user_id)
 {
     $pdo = connect_to_db();
     //商品情報
-    $sql = 'SELECT rental_state.userid, return_date,item_name,photo1 FROM ((rental_state LEFT OUTER JOIN item ON rental_state.item_id = item.item_id) LEFT OUTER JOIN photo ON rental_state.item_id=photo.item_id) WHERE rental_state.userid=:userid';
+    $sql = 'SELECT rental_state.rental_user_id,rental_state.item_id,return_date,item_name,photo1 FROM ((rental_state LEFT OUTER JOIN item ON rental_state.item_id = item.item_id) LEFT OUTER JOIN photo ON rental_state.item_id=photo.item_id) WHERE rental_state.rental_user_id=:userid';
 
     $stmt = $pdo->prepare($sql);
 
@@ -109,10 +109,30 @@ function is_rentaled($user_id)
     }
 }
 
+function return_item($rental_state_id)
+{
+    $pdo = connect_to_db();
+    $sql = 'DELETE FROM rental_state WHERE rental_state_id=:rental_state_id';
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':rental_state_id', $rental_state_id, PDO::PARAM_STR);
+
+    $status = $stmt->execute();
+
+    if ($status == false) {
+        $error = $stmt->errorInfo();
+        // データ登録失敗次にエラーを表示
+        exit('sqlError:' . $error[2]);
+    }
+}
+
 if (filter_input(INPUT_POST, 'token')) {
     if ($_POST['token']=='rental') {
         rental($_POST);
     } elseif ($_POST['token']=='rentaled') {
         is_rentaled($_POST['user_id']);
+    } elseif ($_POST['token']=='return') {
+        return_item($_POST['rental_state_id']);
     }
 }

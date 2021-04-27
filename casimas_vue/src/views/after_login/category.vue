@@ -48,6 +48,7 @@
                         <div class=" col-12 p-0 item-area__content" @click="itemPage(content.item_id)">
                             <div class="item-img">
                                 <img :src="url + content.photo1" />
+                                <rentaled v-show="content.rental_state_id"></rentaled>
                             </div>
                             <p class="m-0 p-0">{{ content.item_name }}</p>
                         </div>
@@ -64,11 +65,13 @@
 import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
+import Rentaled from '../../components/after_login/rentaled.vue';
 
 export default {
     components: {
         mainHeaderBack,
         footerMenu,
+        Rentaled,
     },
     data() {
         return {
@@ -86,7 +89,7 @@ export default {
     created: function() {
         this.userId = this.$store.state.auth;
     },
-    mounted: function() {
+    beforeMount: function() {
         this.categoryFilter();
     },
     methods: {
@@ -166,6 +169,11 @@ export default {
 }
 .category__contents li {
     list-style: none;
+}
+.item-img {
+    height: 87px;
+    width: 87px;
+    position: relative;
 }
 .item-img img {
     height: 87px;

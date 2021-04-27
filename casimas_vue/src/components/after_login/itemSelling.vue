@@ -49,7 +49,7 @@ export default {
     created: function() {
         this.userId = this.$store.state.auth;
     },
-    mounted: function() {
+    beforeMount: function() {
         const self = this;
         const baseUrl = methods.apiUrl.url;
         this.url = baseUrl;

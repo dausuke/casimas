@@ -52,10 +52,9 @@ export default {
     created: function() {
         this.data = this.$store.state.auth;
     },
-    mounted: function() {
+    beforeMount: function() {
         const self = this;
         const baseUrl = methods.apiUrl.url;
-
         const myHttpClient = this.axios.create({
             xsrfHeaderName: 'X-CSRF-Token',
             withCredentials: true,
@@ -78,7 +77,7 @@ export default {
     methods: {
         updateaccount: function() {
             this.token = 'updade_profile';
-            //const self = this;
+            const baseUrl = methods.apiUrl.url;
             const myHttpClient = this.axios.create({
                 xsrfHeaderName: 'X-CSRF-Token',
                 withCredentials: true,

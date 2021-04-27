@@ -30,7 +30,10 @@
             </div>
             <div class="row area m-0 mt-3 px-3 px-lg-5 w-100 justify-content-center">
                 <div class="row w-100 justify-content-center item-name">
-                    <p>{{ itemData.item_name }}</p>
+                    <span class="d-flex">
+                        <p class="mr-3 font-weight-bold" v-show="itemData.rental_state_id">【レンタル中】</p>
+                        <p class="font-weight-bold">{{ itemData.item_name }}</p>
+                    </span>
                 </div>
                 <div class="row w-100 flex-column rental-price">
                     <p class="text-left">7日間レンタル：¥{{ itemData.price_1w }}</p>
@@ -60,16 +63,27 @@
                 </div>
             </div>
             <div class="row area m-0 mt-3 w-100 justify-content-center flex-column">
-                <p>商品説明</p>
+                <p class="font-weight-bold">商品説明</p>
                 <div class="item-introduction">{{ itemData.item_introductoin }}</div>
             </div>
             <div class="row area m-0 mt-3 w-100 justify-content-center">
                 <dl class="d-flex flex-wrap col-12 p-0 m-0 item-state">
                     <dt>ブランド</dt>
-                    <dd>{{ itemData.brand }}</dd>
+                    <dd class="p-0 col-6">{{ itemData.brand }}</dd>
                     <dt>出品者の身長</dt>
-                    <dd>{{ sellerHeight }}cm</dd>
+                    <dd class="p-0 col-6">{{ sellerHeight }}cm</dd>
                 </dl>
+            </div>
+            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!itemData.rental_state_id">
+                <button v-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center1>
+                    レンタル希望を送る
+                </button>
+                <button v-else type="button" class="btn btn-success" @click="editItem">編集する</button>
+            </div>
+            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-else-if="(itemData.rental_user_id == userid.userid)">
+                <button type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center3>
+                    返却通知を送る
+                </button>
             </div>
             <b-modal id="modal-center1" centered title="プランを選択" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__select_plan">
@@ -88,20 +102,23 @@
                 </div>
                 <footer id="modal-center___BV_modal_footer_" class="modal-footer pb-0">
                     <button type="button" class="btn btn-success" @click="rental">レンタルする</button>
-                    <button type="button" class="btn btn-outline-secondary" @click="modalClose">キャンセル</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="modalClose1">キャンセル</button>
                 </footer>
             </b-modal>
-            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area">
-                <button type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center1>
-                    レンタル希望を送る
-                </button>
-                <!-- <button type="button" class="btn btn-success" id="editBtn">編集する</button> -->
-            </div>
             <b-modal id="modal-center2" centered title="商品をレンタルしました" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__succes_rental">
                     <button type="button" class="btn btn-success mb-3"><router-link to="/Home">ホームへ</router-link></button>
                     <button type="button" class="btn btn-success"><router-link to="/itemIsRental">レンタル中の商品一覧</router-link></button>
                 </div>
+            </b-modal>
+            <b-modal id="modal-center3" centered title="返却通知の送信" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
+                <div class="col-8 m-0 p-0 d-flex flex-column modal-body__succes_return">
+                    <p>商品の返送は完了していますか？</p>
+                </div>
+                <footer class="modal-footer pb-0">
+                    <button type="button" class="btn btn-success" @click="returnItem">はい</button>
+                    <button type="button" class="btn btn-outline-secondary" @click="modalClose3">キャンセル</button>
+                </footer>
             </b-modal>
         </main>
         <footerMenu @changePage="changePage"></footerMenu>
@@ -121,7 +138,6 @@ export default {
     data() {
         return {
             itemId: null,
-            token: 'item_ditail',
             itemData: {},
             sellerHeight: null,
             url: '',
@@ -149,12 +165,12 @@ export default {
             });
             const itemRequest = new URLSearchParams();
             itemRequest.append('item_id', id);
-            itemRequest.append('token', this.token);
+            itemRequest.append('token', 'item_ditail');
 
             await myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
                 self.itemData = res.data;
-                //console.log(res.data);
-                console.log(this.userid);
+                console.log(res.data);
+                console.log(self.userid);
             });
         },
         getSeller: function() {
@@ -185,8 +201,11 @@ export default {
             this.getSeller();
             this.getPhoto();
         },
-        modalClose: function() {
+        modalClose1: function() {
             this.$bvModal.hide('modal-center1');
+        },
+        modalClose3: function() {
+            this.$bvModal.hide('modal-center3');
         },
         rental: function() {
             const self = this;
@@ -213,13 +232,31 @@ export default {
                 this.errorMessage = 'プランを選択してください';
             }
         },
+        editItem: function() {
+            this.$router.push({ name: 'editItem', query: { itemId: this.itemId } });
+        },
+        returnItem: function() {
+            const baseUrl = methods.apiUrl.url;
+            const myHttpClient = this.axios.create({
+                xsrfHeaderName: 'X-CSRF-Token',
+                withCredentials: true,
+            });
+            const itemRequest = new URLSearchParams();
+            itemRequest.append('rental_state_id', this.itemData.rental_state_id);
+            itemRequest.append('token', 'return');
+
+            myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function() {
+                //console.log(res)
+                this.$router.push({ name: 'Home' });
+            });
+        },
     },
     created: function() {
         const router = this.$route.query;
         this.itemId = router.itemId;
         this.userid = this.$store.state.auth;
     },
-    mounted: function() {
+    beforeMount: function() {
         this.getAllData(this.itemId);
     },
     watch: {
