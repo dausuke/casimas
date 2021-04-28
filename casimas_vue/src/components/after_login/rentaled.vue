@@ -19,7 +19,7 @@ export default {};
     position: absolute;
     font-size: 9px;
     font-weight: bold;
-    top: 15px;
+    top: 14px;
     left: -5px;
     color: white;
     transform: rotate(-45deg);

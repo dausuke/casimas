@@ -236,6 +236,7 @@ export default {
             this.$router.push({ name: 'editItem', query: { itemId: this.itemId } });
         },
         returnItem: function() {
+            const self = this;
             const baseUrl = methods.apiUrl.url;
             const myHttpClient = this.axios.create({
                 xsrfHeaderName: 'X-CSRF-Token',
@@ -247,7 +248,7 @@ export default {
 
             myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function() {
                 //console.log(res)
-                this.$router.push({ name: 'Home' });
+                self.$router.push({ name: 'Home' });
             });
         },
     },
