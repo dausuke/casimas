@@ -182,7 +182,7 @@
                 </span>
             </div>
         </div>
-        <span class="showRule" @click="change('selling')" v-if="userId.sellerid">出品ルールをみる</span>
+        <p class="show-rule m-0 py-3" @click="change('sellingRule')" v-if="this.$store.state.auth.sellerid">出品ルールをみる</p>
     </main>
 </template>
 
@@ -196,4 +196,36 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.user-content {
+    font-size: 12px;
+}
+.rule-container p,
+.rule-container span {
+    text-align: left;
+    overflow-wrap: break-word;
+    margin: 0;
+}
+.rule-container span {
+    margin-bottom: 1rem;
+}
+.rule-container p.rule-heading {
+    font-size: 14px;
+    font-weight: bold;
+}
+.indent {
+    padding-left: 2em;
+}
+.table {
+    border: 1px solid #eee;
+}
+.table td {
+    font-size: 10px;
+}
+.show-rule {
+    color: #007bff;;
+}
+/* .rule-heading{
+    text-align: left;
+} */
+</style>

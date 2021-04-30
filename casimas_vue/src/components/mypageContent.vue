@@ -176,7 +176,7 @@ ul li {
 .mypage-seller-icon {
     background-image:url(../../img/background.jpg);
     background-position: center center;
-    background-repeat: no-repeat;
+    /* background-repeat: no-repeat; */
     background-size: contain;
 }
 .profile-img {
