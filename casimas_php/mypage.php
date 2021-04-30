@@ -171,14 +171,12 @@ function uodate_account($user_data)
         exit();
     } else {
         $user = Sentinel::findById($user_data['user_id']);
-        var_dump($user);
-        exit();
 
         $credentials = [
             'email' => $user_data['email'],
         ];
 
-        $user = Sentinel::validForUpdate($user, $credentials);
+        $user = Sentinel::update($user, $credentials);
 
     }
 }
