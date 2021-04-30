@@ -1,7 +1,6 @@
 <template>
     <div>
         <mainHeader></mainHeader>
-
         <main class="container-fluid user-content">
             <ul class="nav nav-tabs d-flex justify-content-center">
                 <li class="nav-item">
