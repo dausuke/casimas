@@ -65,7 +65,7 @@
 import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import Rentaled from '../../components/after_login/rentaled.vue';
+import Rentaled from '../../components/rentaled.vue';
 
 export default {
     components: {
@@ -82,14 +82,11 @@ export default {
                 h170: [],
                 other: [],
             },
-            userId: {},
-            url: '',
+            userId: this.$store.state.auth,
+            url: methods.apiUrl.url,
         };
     },
     created: function() {
-        this.userId = this.$store.state.auth;
-    },
-    beforeMount: function() {
         this.categoryFilter();
     },
     methods: {
@@ -103,25 +100,18 @@ export default {
         },
         getItem: async function() {
             const self = this;
-            const baseUrl = methods.apiUrl.url;
-            this.url = baseUrl;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const requestItem = new URLSearchParams();
-
-            requestItem.append('token', 'all_item');
-
-            await myHttpClient.post(baseUrl + 'get_item.php', requestItem).then(function(res) {
-                //console.log(res);
-                self.item = res.data;
-            });
+            await methods
+                .getItem({
+                    token: 'all_item',
+                })
+                .then(value => {
+                    self.item = value;
+                });
         },
         categoryFilter: async function() {
             await this.getItem();
             const self = this;
-            this.item.forEach(function(v) {
+            this.item.forEach(v => {
                 switch (v.category_content) {
                     case '[出品者身長]150cm~159cm':
                         self.categoryFilItem.h150.push(v);

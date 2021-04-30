@@ -228,7 +228,7 @@ import methods from '../../methods';
 export default {
     data() {
         return {
-            userId: {},
+            userId: this.$store.state.auth,
             itemData: {
                 name: null,
                 description: null,
@@ -244,9 +244,7 @@ export default {
             show: 'none',
         };
     },
-    created: function() {
-        this.userId = this.$store.state.auth;
-    },
+    created: function() {},
     methods: {
         uploadFile() {
             switch (this.fileCount) {
@@ -320,8 +318,12 @@ export default {
             }
         },
         submititem: function() {
-                        const baseUrl = methods.apiUrl.url;
-
+            const self = this
+            const baseUrl = methods.apiUrl.url;
+            const myHttpClient = this.axios.create({
+                xsrfHeaderName: 'X-CSRF-Token',
+                withCredentials: true,
+            });
             const upItemData = new FormData();
             if (this.itemData.photo[0]) {
                 upItemData.append('photo1', this.itemData.photo[0]);
@@ -346,15 +348,16 @@ export default {
             if (this.itemData.purchaseJudg) {
                 upItemData.append('price_purchase', this.itemData.pricePurchase);
             }
-
-            this.axios
-                .post(baseUrl+'submit_item.php', upItemData, {
+            myHttpClient
+                .post(baseUrl + 'submit_item.php', upItemData, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                     },
                 })
                 .then(function(res) {
-                    console.log(res);
+                    console.log(res)
+                    alert('商品を出品しました')
+                    self.$router.push({ name: 'Home' })
                 });
         },
     },

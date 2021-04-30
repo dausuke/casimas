@@ -26,10 +26,10 @@
 </template>
 
 <script>
-import mainHeaderBack from '../mainHeaderBack';
+import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import mypageContent from './mypageContent';
+import mypageContent from '../../components/mypageContent';
 
 export default {
     components: {
@@ -39,13 +39,12 @@ export default {
     },
     data() {
         return {
-            data: null,
+            data: this.$store.state.auth,
             userData: {},
             token: 'getuser',
         };
     },
     created: function() {
-        this.data = this.$store.state.auth;
     },
     beforeMount: function() {
         const self = this;

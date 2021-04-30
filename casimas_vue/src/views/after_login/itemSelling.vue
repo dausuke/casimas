@@ -27,10 +27,10 @@
     </div>
 </template>
 <script>
-import mainHeaderBack from '../mainHeaderBack';
+import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import mypageContent from './mypageContent';
+import mypageContent from '../../components/mypageContent';
 
 export default {
     components: {
@@ -41,39 +41,46 @@ export default {
     data() {
         return {
             sellingItem: {},
-            userId: {},
-            token: 'selling_allitem',
-            url: '',
+            userId: this.$store.state.auth,
+            url: methods.apiUrl.url,
         };
     },
-    created: function() {
-        this.userId = this.$store.state.auth;
-    },
-    beforeMount: function() {
+    created: async function() {
         const self = this;
-        const baseUrl = methods.apiUrl.url;
-        this.url = baseUrl;
-        const myHttpClient = this.axios.create({
-            xsrfHeaderName: 'X-CSRF-Token',
-            withCredentials: true,
-        });
-        const userId = new URLSearchParams();
-
-        userId.append('seller_id', this.userId.userid);
-        userId.append('token', this.token);
-
-        myHttpClient.post(baseUrl + 'get_item.php', userId).then(function(res) {
-            console.log(res);
-            self.sellingItem = res.data;
-        });
+        await methods
+            .getItem({
+                token: 'selling_allitem',
+                userId: this.userId.sellerid,
+            })
+            .then(value => {
+                self.sellingItem = value;
+            });
     },
+    // beforeMount: function() {
+    //     const self = this;
+    //     const baseUrl = methods.apiUrl.url;
+    //     this.url = baseUrl;
+    //     const myHttpClient = this.axios.create({
+    //         xsrfHeaderName: 'X-CSRF-Token',
+    //         withCredentials: true,
+    //     });
+    //     const userId = new URLSearchParams();
+
+    //     userId.append('seller_id', this.userId.userid);
+    //     userId.append('token', this.token);
+
+    //     myHttpClient.post(baseUrl + 'get_item.php', userId).then(function(res) {
+    //         console.log(res);
+    //         self.sellingItem = res.data;
+    //     });
+    // },
     methods: {
         changePage: function(request) {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
         itemPage: function(id) {
-            this.$router.push({name:'item',query: { itemId: id }})
+            this.$router.push({ name: 'item', query: { itemId: id } });
             console.log(id);
         },
     },

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <img src="../../../img/rentaled.png" class="rentaled" />
+        <img src="../../img/rentaled.png" class="rentaled" />
         <span class="rentaled-text" >レンタル中</span>
     </div>
 </template>

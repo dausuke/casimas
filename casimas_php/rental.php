@@ -87,28 +87,6 @@ function rental($rental_data)
     }
 }
 
-function is_rentaled($user_id)
-{
-    $pdo = connect_to_db();
-    //商品情報
-    $sql = 'SELECT rental_state.rental_user_id,rental_state.item_id,return_date,item_name,photo1 FROM ((rental_state LEFT OUTER JOIN item ON rental_state.item_id = item.item_id) LEFT OUTER JOIN photo ON rental_state.item_id=photo.item_id) WHERE rental_state.rental_user_id=:userid';
-
-    $stmt = $pdo->prepare($sql);
-
-    $stmt->bindValue(':userid', $user_id, PDO::PARAM_STR);
-
-    $status = $stmt->execute();
-
-    if ($status == false) {
-        $error = $stmt->errorInfo();
-        // データ登録失敗次にエラーを表示
-        exit('sqlError:' . $error[2]);
-    } else {
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($result, JSON_UNESCAPED_UNICODE);
-    }
-}
-
 function return_item($rental_state_id)
 {
     $pdo = connect_to_db();
@@ -130,8 +108,6 @@ function return_item($rental_state_id)
 if (filter_input(INPUT_POST, 'token')) {
     if ($_POST['token']=='rental') {
         rental($_POST);
-    } elseif ($_POST['token']=='rentaled') {
-        is_rentaled($_POST['user_id']);
     } elseif ($_POST['token']=='return') {
         return_item($_POST['rental_state_id']);
     }

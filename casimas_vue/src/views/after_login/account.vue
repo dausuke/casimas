@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import mainHeaderBack from '../mainHeaderBack';
+import mainHeaderBack from '../../components/mainHeaderBack';
 import methods from '../../methods';
 
 export default {
@@ -44,13 +44,12 @@ export default {
     },
     data() {
         return {
-            data: null,
+            data: this.$store.state.auth,
             userData: {},
             token: 'getuser',
         };
     },
     created: function() {
-        this.data = this.$store.state.auth;
     },
     beforeMount: function() {
         const self = this;

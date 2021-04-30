@@ -32,7 +32,7 @@
 </template>
 <script>
 //import footerMenu from '../footerMenu.vue';
-import methods from './../../methods';
+import methods from '../methods';
 export default {
     data() {
         return {
@@ -174,7 +174,10 @@ ul li {
     height: 120px;
 }
 .mypage-seller-icon {
-    background-color: bisque;
+    background-image:url(../../img/background.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .profile-img {
     background-position: center center;

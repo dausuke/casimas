@@ -1,7 +1,6 @@
 <?php
 ini_set('display_errors', 1);
 
-//関数読み込み
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 require './vendor/autoload.php';
@@ -33,14 +32,10 @@ $capsule->addConnection([
 //     'charset'   => 'utf8',
 //     'collation' => 'utf8_unicode_ci',
 // ]);
+$capsule->bootEloquent();
 
 //関数読み込み
 include("functions.php");
-//cors_config();
-
-$capsule->bootEloquent();
-//cors_config();
-
 $pdo = connect_to_db();
 
 //ファイル処理

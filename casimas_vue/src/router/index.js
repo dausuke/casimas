@@ -10,15 +10,15 @@ import rule from '../views/after_login/rule';
 import sell from '../views/after_login/sell';
 import MyPage from '../views/after_login/mypage';
 import notice from '../views/after_login/notice';
-import item from '../components/after_login/item';
-import editItem from '../components/after_login/editItem';
+import item from '../views/after_login/item';
+import editItem from '../views/after_login/editItem';
 import category from '../views/after_login/category';
 
 //マイページ内
-import profile from '../components/after_login/profile';
-import account from '../components/after_login/account';
-import itemSelling from '../components/after_login/itemSelling';
-import itemIsRental from '../components/after_login/itemIsRental';
+import profile from '../views/after_login/profile';
+import account from '../views/after_login/account';
+import itemSelling from '../views/after_login/itemSelling';
+import itemIsRental from '../views/after_login/itemIsRental';
 
 Vue.use(VueRouter);
 

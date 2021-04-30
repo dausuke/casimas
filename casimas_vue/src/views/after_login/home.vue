@@ -29,40 +29,49 @@
 import mainHeader from '../../components/mainHeader';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import rentaled from '../../components/after_login/rentaled'
+import rentaled from '../../components/rentaled';
 
 export default {
     components: {
         mainHeader,
         footerMenu,
-        rentaled
+        rentaled,
     },
     data() {
         return {
-            data: {},
-            allItem: {},
+            data: this.$store.state.auth,
+            allItem: null,
+            url: methods.apiUrl.url,
         };
     },
     created: function() {
-        this.data = this.$store.state.auth;
-    },
-    beforeMount: function() {
         const self = this;
-        const baseUrl = methods.apiUrl.url;
-        this.url = baseUrl;
-        const myHttpClient = this.axios.create({
-            xsrfHeaderName: 'X-CSRF-Token',
-            withCredentials: true,
-        });
-        const requestItem = new URLSearchParams();
-
-        requestItem.append('token', 'all_item');
-
-        myHttpClient.post(baseUrl + 'get_item.php', requestItem).then(function(res) {
-            console.log(res.data);
-            self.allItem = res.data;
-        });
+        methods
+            .getItem({
+                token: 'all_item',
+            })
+            .then((value)=> {
+                console.log(value);
+                self.allItem = value;
+            });
     },
+    // beforeMount: function() {
+    //     const self = this;
+    //     const baseUrl = methods.apiUrl.url;
+    //     this.url = baseUrl;
+    //     const myHttpClient = this.axios.create({
+    //         xsrfHeaderName: 'X-CSRF-Token',
+    //         withCredentials: true,
+    //     });
+    //     const requestItem = new URLSearchParams();
+
+    //     requestItem.append('token', 'all_item');
+
+    //     myHttpClient.post(baseUrl + 'get_item.php', requestItem).then(function(res) {
+    //         console.log(res)
+    //         self.allItem = res.data;
+    //     });
+    // },
     methods: {
         changePage: function(request) {
             const router = this.$router;
@@ -72,6 +81,9 @@ export default {
             this.$router.push({ name: 'item', query: { itemId: id } });
             console.log(id);
         },
+        // getAllItem: async function() {
+
+        // },
     },
 };
 </script>
@@ -105,5 +117,4 @@ export default {
     width: 87px;
     object-fit: cover;
 }
-
 </style>

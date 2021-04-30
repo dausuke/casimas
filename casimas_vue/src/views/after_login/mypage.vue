@@ -43,7 +43,7 @@
 import mainHeader from '../../components/mainHeader';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import mypageContent from '../../components/after_login/mypageContent';
+import mypageContent from '../../components/mypageContent';
 
 export default {
     components: {
@@ -53,12 +53,11 @@ export default {
     },
     data() {
         return {
-            data: {},
+            data: this.$store.state.auth,
             mypageData: {},
         };
     },
     created: function() {
-        this.data = this.$store.state.auth;
     },
     beforeMount:function(){
             const self = this;

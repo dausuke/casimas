@@ -71,7 +71,7 @@
                     <dt>ブランド</dt>
                     <dd class="p-0 col-6">{{ itemData.brand }}</dd>
                     <dt>出品者の身長</dt>
-                    <dd class="p-0 col-6">{{ sellerHeight }}cm</dd>
+                    <dd class="p-0 col-6">{{ sellerHeight.height }}cm</dd>
                 </dl>
             </div>
             <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!itemData.rental_state_id">
@@ -80,7 +80,7 @@
                 </button>
                 <button v-else type="button" class="btn btn-success" @click="editItem">編集する</button>
             </div>
-            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-else-if="(itemData.rental_user_id == userid.userid)">
+            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-else-if="itemData.rental_user_id == userid.userid">
                 <button type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center3>
                     返却通知を送る
                 </button>
@@ -126,7 +126,7 @@
 </template>
 
 <script>
-import mainHeaderBack from '../mainHeaderBack';
+import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
 
@@ -137,69 +137,86 @@ export default {
     },
     data() {
         return {
-            itemId: null,
-            itemData: {},
+            itemId: this.$route.query.itemId,
+            itemData: null,
             sellerHeight: null,
-            url: '',
+            url: methods.apiUrl.url,
             rentalData: {
                 plan: null,
                 price: null,
             },
-            userid: {},
+            userid: this.$store.state.auth,
             errorMessage: null,
         };
+    },
+    created: async function() {
+        const self = this;
+        await methods
+            .getItem({
+                token: 'item_ditail',
+                itemId: this.itemId,
+            })
+            .then((value)=> {
+                console.log(value);
+                self.itemData = value;
+            });
+        await methods
+            .getSeller({
+                token: 'seller',
+                sellerId: this.itemData.seller_id,
+            })
+            .then((value)=> {
+                console.log(value);
+                self.sellerHeight = value;
+            });
+        await this.getPhoto();
     },
     methods: {
         changePage: function(request) {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
-        getItem: async function(id) {
-            const self = this;
-            const baseUrl = methods.apiUrl.url;
-            this.url = baseUrl;
+        // getItem: async function(id) {
+        //     const self = this;
+        //     const baseUrl = ;
+        //     this.url = baseUrl;
 
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const itemRequest = new URLSearchParams();
-            itemRequest.append('item_id', id);
-            itemRequest.append('token', 'item_ditail');
+        //     const myHttpClient = this.axios.create({
+        //         xsrfHeaderName: 'X-CSRF-Token',
+        //         withCredentials: true,
+        //     });
+        //     const itemRequest = new URLSearchParams();
+        //     itemRequest.append('item_id', id);
+        //     itemRequest.append('token', 'item_ditail');
 
-            await myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
-                self.itemData = res.data;
-                console.log(res.data);
-                console.log(self.userid);
-            });
-        },
-        getSeller: function() {
-            const self = this;
-            const baseUrl = methods.apiUrl.url;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const itemRequest = new URLSearchParams();
-            itemRequest.append('seller_id', this.itemData.seller_id);
-            itemRequest.append('token', 'seller');
+        //     await myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
+        //         self.itemData = res.data;
+        //         console.log(res.data);
+        //         console.log(self.userid);
+        //     });
+        // },
+        // getSeller: function() {
+        //     const self = this;
+        //     const baseUrl = methods.apiUrl.url;
+        //     const myHttpClient = this.axios.create({
+        //         xsrfHeaderName: 'X-CSRF-Token',
+        //         withCredentials: true,
+        //     });
+        //     const itemRequest = new URLSearchParams();
+        //     itemRequest.append('seller_id', this.itemData.seller_id);
+        //     itemRequest.append('token', 'seller');
 
-            myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
-                self.sellerHeight = res.data.height;
-                //console.log(res.data);
-            });
-        },
+        //     myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
+        //         self.sellerHeight = res.data.height;
+        //         //console.log(res.data);
+        //     });
+        // },
         getPhoto: function() {
+            this.url = methods.apiUrl.url;
             for (let i = 1; i <= 4; i++) {
                 const imgUrl = this.url + document.getElementById('imgContent' + i).dataset.url;
                 document.getElementById('imgContent' + i).style.backgroundImage = 'url(' + imgUrl + ')';
-                //console.log(imgUrl);
             }
-        },
-        getAllData: async function(itemId) {
-            await this.getItem(itemId);
-            this.getSeller();
-            this.getPhoto();
         },
         modalClose1: function() {
             this.$bvModal.hide('modal-center1');
@@ -207,27 +224,39 @@ export default {
         modalClose3: function() {
             this.$bvModal.hide('modal-center3');
         },
-        rental: function() {
+        rental: async function() {
             const self = this;
-            const baseUrl = methods.apiUrl.url;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const rentalData = new URLSearchParams();
+            // const baseUrl = methods.apiUrl.url;
+            // const myHttpClient = this.axios.create({
+            //     xsrfHeaderName: 'X-CSRF-Token',
+            //     withCredentials: true,
+            // });
+            // const rentalData = new URLSearchParams();
             if (this.rentalData.plan != null && this.rentalData.price != null) {
-                rentalData.append('item_id', this.itemData.item_id);
-                rentalData.append('seller_id', this.itemData.seller_id);
-                rentalData.append('user_id', this.$store.state.auth.userid);
-                rentalData.append('plan', this.rentalData.plan);
-                rentalData.append('transaction_price', this.rentalData.price);
-                rentalData.append('token', 'rental');
+                await methods
+                    .rentalAction({
+                        token: 'rental',
+                        itemId: this.itemData.item_id,
+                        sellerId: this.itemData.seller_id,
+                        userId: this.$store.state.auth.userid,
+                        plan: this.rentalData.plan,
+                        transactionPlace: this.rentalData.price,
+                    })
+                    .then(function() {
+                        self.$bvModal.hide('modal-center1');
+                    });
+                // rentalData.append('item_id', this.itemData.item_id);
+                // rentalData.append('seller_id', this.itemData.seller_id);
+                // rentalData.append('user_id', this.$store.state.auth.userid);
+                // rentalData.append('plan', this.rentalData.plan);
+                // rentalData.append('transaction_price', this.rentalData.price);
+                // rentalData.append('token', 'rental');
 
-                myHttpClient.post(baseUrl + 'rental.php', rentalData).then(function(res) {
-                    console.log(res.data);
-                    self.$bvModal.show('modal-center2');
-                });
-                this.$bvModal.hide('modal-center1');
+                // myHttpClient.post(baseUrl + 'rental.php', rentalData).then(function(res) {
+                //     console.log(res.data);
+                //
+                // });
+                this.$bvModal.show('modal-center2');
             } else {
                 this.errorMessage = 'プランを選択してください';
             }
@@ -235,30 +264,37 @@ export default {
         editItem: function() {
             this.$router.push({ name: 'editItem', query: { itemId: this.itemId } });
         },
-        returnItem: function() {
+        returnItem: async function() {
             const self = this;
-            const baseUrl = methods.apiUrl.url;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const itemRequest = new URLSearchParams();
-            itemRequest.append('rental_state_id', this.itemData.rental_state_id);
-            itemRequest.append('token', 'return');
+            await methods
+                .rentalAction({
+                    token: 'return',
+                    rentalStateId: this.itemData.rental_state_id,
+                })
+                .then(function() {
+                    alert('返却が完了しました');
+                    self.$router.push({ name: 'Home' });
+                });
+            //
+            // const self = this;
+            // const baseUrl = methods.apiUrl.url;
+            // const myHttpClient = this.axios.create({
+            //     xsrfHeaderName: 'X-CSRF-Token',
+            //     withCredentials: true,
+            // });
+            // const itemRequest = new URLSearchParams();
+            // itemRequest.append('rental_state_id', this.itemData.rental_state_id);
+            // itemRequest.append('token', 'return');
 
-            myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function() {
-                //console.log(res)
-                self.$router.push({ name: 'Home' });
-            });
+            // myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function() {
+            //     //console.log(res)
+            //
+            // });
         },
-    },
-    created: function() {
-        const router = this.$route.query;
-        this.itemId = router.itemId;
-        this.userid = this.$store.state.auth;
-    },
-    beforeMount: function() {
-        this.getAllData(this.itemId);
+        dataSet: function() {
+            this.itemData = this.$store.state.itemDitail;
+            this.sellerHeight = this.$store.state.sellerInfo.height;
+        },
     },
     watch: {
         rentalData: {

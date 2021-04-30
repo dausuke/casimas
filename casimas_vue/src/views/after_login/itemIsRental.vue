@@ -10,7 +10,7 @@
                 <div class="row w-100 m-0 justify-content-center">
                     <div class="item-area w-100">
                         <ul class=" row d-flex justify-content-around m-0 p-0 w-100">
-                            <li class="col-12 p-3" v-for="(content, index) in rentaledItem" :key="index">
+                            <li class="col-12 p-3" v-for="(content, index) in rentaledItemData" :key="index">
                                 <div class="col-12 d-flex" @click="itemPage(content.item_id)">
                                     <div class="col-4 m-0 p-0 d-flex justify-content-center align-items-center flex-column">
                                         <div :id="'rentalItemImg' + index" class="m-0 rental-item-img"></div>
@@ -32,10 +32,10 @@
     </div>
 </template>
 <script>
-import mainHeaderBack from '../mainHeaderBack';
+import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import mypageContent from './mypageContent';
+import mypageContent from '../../components/mypageContent';
 
 export default {
     components: {
@@ -45,32 +45,39 @@ export default {
     },
     data() {
         return {
-            rentaledItem: {},
-            userId: {},
+            rentaledItemData: {},
+            userId: this.$store.state.auth,
         };
     },
-    created: function() {
-        this.userId = this.$store.state.auth;
-    },
-    beforeMount: async function() {
-        const self = this;
+    created: async function() {
+        const self = this
         const baseUrl = methods.apiUrl.url;
-        const myHttpClient = this.axios.create({
-            xsrfHeaderName: 'X-CSRF-Token',
-            withCredentials: true,
-        });
-        const itemRequest = new URLSearchParams();
-        itemRequest.append('user_id', this.userId.userid);
-        itemRequest.append('token', 'rentaled');
-
-        await myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function(res) {
-            self.rentaledItem = res.data;
-            console.log(res.data);
-        });
-        this.rentaledItem.forEach(function(v, k) {
+        await methods
+            .getItem({
+                token: 'rentaled',
+                userId: this.$store.state.auth.userid,
+            })
+            .then(value => {
+                self.rentaledItemData = value;
+            });
+        await this.rentaledItemData.forEach((v, k) => {
             document.getElementById('rentalItemImg' + k).style.backgroundImage = 'url(' + baseUrl + v.photo1 + ')';
         });
     },
+    // beforeMount: function() {
+    //         const self = this;
+    //         const myHttpClient = this.axios.create({
+    //             xsrfHeaderName: 'X-CSRF-Token',
+    //             withCredentials: true,
+    //         });
+    //         const itemRequest = new URLSearchParams();
+    //         itemRequest.append('user_id', this.userId.userid);
+    //         itemRequest.append('token', 'rentaled');
+    //         await myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function(res) {
+    //             self.rentaledItem = res.data;
+    //             console.log(res.data);
+    //         });
+    // },
     methods: {
         changePage: function(request) {
             const router = this.$router;

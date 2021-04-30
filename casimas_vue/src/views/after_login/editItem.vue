@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import mainHeaderBack from '../mainHeaderBack';
+import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
 
@@ -117,115 +117,95 @@ export default {
     },
     data() {
         return {
-            itemId: null,
+            itemId: this.$route.query.itemId,
             itemData: {},
-            sellerHeight: null,
             url: '',
-            userid: {},
+            userid: this.$store.state.auth,
             purchaseJudg: false,
             errorMessage: null,
         };
+    },
+    created: function() {
+        const self = this;
+        methods
+            .getItem({
+                token: 'item_ditail',
+                itemId: this.itemId,
+            })
+            .then(value => {
+                self.itemData = value;
+                if (value.purchase_judg == 'true') {
+                    self.purchaseJudg = true;
+                }
+            });
     },
     methods: {
         changePage: function(request) {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
-        getItem: async function(id) {
-            const self = this;
-            const baseUrl = methods.apiUrl.url;
-            this.url = baseUrl;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const itemRequest = new URLSearchParams();
-            itemRequest.append('item_id', id);
-            itemRequest.append('token', 'item_ditail');
-
-            await myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
-                self.itemData = res.data;
-                if (res.data.purchase_judg == 'true') {
-                    self.purchaseJudg = true;
-                }
-            });
-        },
-        // getSeller: function() {
-        //     const self = this;
-        //     const baseUrl = methods.apiUrl.url;
-        //     const myHttpClient = this.axios.create({
-        //         xsrfHeaderName: 'X-CSRF-Token',
-        //         withCredentials: true,
-        //     });
-        //     const itemRequest = new URLSearchParams();
-        //     itemRequest.append('seller_id', this.itemData.seller_id);
-        //     itemRequest.append('token', 'seller');
-
-        //     myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
-        //         self.sellerHeight = res.data.height;
-        //         //console.log(res.data);
-        //     });
-        // },
-        // getPhoto: function() {
-        //     for (let i = 1; i <= 4; i++) {
-        //         const imgUrl = this.url + document.getElementById('imgContent' + i).dataset.url;
-        //         document.getElementById('imgContent' + i).style.backgroundImage = 'url(' + imgUrl + ')';
-        //         //console.log(imgUrl);
-        //     }
-        // },
-        getAllData: async function(itemId) {
-            await this.getItem(itemId);
-            //this.getSeller();
-            // this.getPhoto();
-        },
         modalClose: function() {
             this.$bvModal.hide('modal-center1');
         },
         deletItem: function() {
-            const self = this
-            const baseUrl = methods.apiUrl.url;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const itemData = new URLSearchParams();
-            itemData.append('item_id', this.itemId);
-            itemData.append('token', 'delete');
-            myHttpClient.post(baseUrl + 'edit_item.php', itemData).then(function() {
-                self.$router.push({ name: 'Home' });
-            });
-            this.$bvModal.hide('modal-center1');
+            const self = this;
+            methods
+                .sellerAction({
+                    token:'delete',
+                    itemId:this.itemId
+                }).then(
+                    self.$router.push({ name: 'Home' })
+                )
+            // const baseUrl = methods.apiUrl.url;
+            // const myHttpClient = this.axios.create({
+            //     xsrfHeaderName: 'X-CSRF-Token',
+            //     withCredentials: true,
+            // });
+            // const itemData = new URLSearchParams();
+            // itemData.append('item_id', this.itemId);
+            // itemData.append('token', 'delete');
+            // myHttpClient.post(baseUrl + 'edit_item.php', itemData).then(function() {
+            //     self.$router.push({ name: 'Home' });
+            // });
+            // this.$bvModal.hide('modal-center1');
         },
         editItem: function() {
-            const self = this
-            const baseUrl = methods.apiUrl.url;
-            console.log(baseUrl);
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const itemData = new URLSearchParams();
-            itemData.append('item_id', this.itemId);
-            itemData.append('item_introductoin', this.itemData.item_introductoin);
-            itemData.append('item_name', this.itemData.item_name);
-            itemData.append('price_1m', this.itemData.price_1m);
-            itemData.append('price_1w', this.itemData.price_1w);
-            itemData.append('price_purchase', this.itemData.price_purchase);
-            itemData.append('purchase_judg', this.purchaseJudg);
-            itemData.append('token', 'edit');
-            myHttpClient.post(baseUrl + 'edit_item.php', itemData).then(function() {
-                alert('商品を編集しました');
-                self.$router.push({ name: 'Home' });
-            });
+            //const self = this;
+            methods
+                .sellerAction({
+                    token: 'edit',
+                    itemId: this.itemId,
+                    itemIntroductoin: this.itemData.item_introductoin,
+                    itemName: this.itemData.item_name,
+                    price1m: this.itemData.price_1m,
+                    price1w: this.itemData.price_1w,
+                    pricePurchase: this.itemData.price_purchase,
+                    purchaseJudg: this.purchaseJudg,
+                })
+                .then(() => {
+                    alert('商品を編集しました');
+                    self.$router.push({ name: 'Home' });
+                });
+            // const baseUrl = methods.apiUrl.url;
+            // console.log(baseUrl);
+            // const myHttpClient = this.axios.create({
+            //     xsrfHeaderName: 'X-CSRF-Token',
+            //     withCredentials: true,
+            // });
+            // const itemData = new URLSearchParams();
+            // itemData.append('item_id', this.itemId);
+            // itemData.append('item_introductoin', this.itemData.item_introductoin);
+            // itemData.append('item_name', this.itemData.item_name);
+            // itemData.append('price_1m', this.itemData.price_1m);
+            // itemData.append('price_1w', this.itemData.price_1w);
+            // itemData.append('price_purchase', this.itemData.price_purchase);
+            // itemData.append('purchase_judg', this.purchaseJudg);
+            // itemData.append('token', 'edit');
+            // myHttpClient.post(baseUrl + 'edit_item.php', itemData).then(function() {
+            //     alert('商品を編集しました');
+            //     self.$router.push({ name: 'Home' });
+            // });
         },
-    },
-    created: function() {
-        const router = this.$route.query;
-        this.itemId = router.itemId;
-        this.userid = this.$store.state.auth;
-    },
-    beforeMount: function() {
-        this.getAllData(this.itemId);
     },
 };
 </script>
