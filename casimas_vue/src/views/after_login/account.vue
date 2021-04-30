@@ -25,7 +25,7 @@
                     <input type="text" class="form-control" id="email" v-model="userData.email" />
                 </div>
                 <div class="form-group pb-lg-5 pb-3">
-                    <button type="button" class="btn btn-primary form-control w-50 mt-3 mt-lg-5" id="submitSellBtn">
+                    <button type="button" class="btn btn-primary form-control w-50 mt-3 mt-lg-5" @click="updateaccount">
                         変更する
                     </button>
                 </div>
@@ -46,56 +46,32 @@ export default {
         return {
             data: this.$store.state.auth,
             userData: {},
-            token: 'getuser',
         };
     },
     created: function() {
-    },
-    beforeMount: function() {
         const self = this;
-        const baseUrl = methods.apiUrl.url;
-        const myHttpClient = this.axios.create({
-            xsrfHeaderName: 'X-CSRF-Token',
-            withCredentials: true,
-        });
-        const userId = new URLSearchParams();
-        userId.append('user_id', this.data.userid);
-        userId.append('token', this.token);
-
-        myHttpClient
-            .post(baseUrl + 'mypage.php', userId)
-            .then(function(res) {
-                console.log(res);
-                self.userData = res.data;
+        methods
+            .mypageAction({
+                token: 'getuser',
+                userId: this.$store.state.auth.userid,
             })
-            .catch(function() {
-                alert('通信エラーが発生しました');
-            })
-            .finally(function() {});
+            .then(value => {
+                self.userData = value;
+            });
     },
     methods: {
         updateaccount: function() {
-            this.token = 'updade_profile';
-            const baseUrl = methods.apiUrl.url;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const userUpdateData = new URLSearchParams();
-            userUpdateData.append('user_id', this.data.userid);
-            userUpdateData.append('token', this.token);
-            userUpdateData.append('nickname', this.userData.nickname);
-            userUpdateData.append('introduction', this.userData.introduction);
-
-            myHttpClient
-                .post(baseUrl + 'mypage.php', userUpdateData)
-                .then(function(res) {
-                    console.log(res);
+            methods
+                .mypageAction({
+                    token: 'update_account',
+                    userId: this.$store.state.auth.userid,
+                    address:this.userData.address,
+                    phone:this.userData.phone,
+                    email:this.userData.email
                 })
-                .catch(function() {
-                    alert('通信エラーが発生しました');
-                })
-                .finally(function() {});
+                .then(() => {
+                    alert('登録情報を編集しました');
+                });
         },
     },
 };

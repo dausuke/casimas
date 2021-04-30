@@ -44,54 +44,29 @@ export default {
             token: 'getuser',
         };
     },
-    created: function() {
-    },
-    beforeMount: function() {
+        created: function() {
         const self = this;
-        const baseUrl = methods.apiUrl.url;
-
-        const myHttpClient = this.axios.create({
-            xsrfHeaderName: 'X-CSRF-Token',
-            withCredentials: true,
-        });
-        const userId = new URLSearchParams();
-        userId.append('user_id', this.data.userid);
-        userId.append('token', this.token);
-
-        myHttpClient
-            .post(baseUrl + 'mypage.php', userId)
-            .then(function(res) {
-                console.log(res);
-                self.userData = res.data;
+        methods
+            .mypageAction({
+                token: 'getuser',
+                userId:this.$store.state.auth.userid
             })
-            .catch(function() {
-                alert('通信エラーが発生しました');
-            })
-            .finally(function() {});
+            .then((value)=> {
+                self.userData = value;
+            });
     },
     methods: {
         updateProfile: function() {
-            this.token = 'updade_profile';
-            //const self = this;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const userUpdateData = new URLSearchParams();
-            userUpdateData.append('user_id', this.data.userid);
-            userUpdateData.append('token', 'updade_profile');
-            userUpdateData.append('nickname', this.userData.nickname);
-            userUpdateData.append('introduction', this.userData.introduction);
-
-            myHttpClient
-                .post('http://localhost/casimas/casimas_php/mypage.php', userUpdateData)
-                .then(function(res) {
-                    console.log(res);
-                })
-                .catch(function() {
-                    alert('通信エラーが発生しました');
-                })
-                .finally(function() {});
+             //const self = this;
+        methods
+            .mypageAction({
+                token:'updade_profile',
+                userId:this.data.userid,
+                nickname:this.userData.nickname,
+                introduction:this.userData.introduction
+            }).then(()=>{
+                alert('プロフィールを編集しました')
+            })
         },
         changePage: function(request) {
             const router = this.$router;

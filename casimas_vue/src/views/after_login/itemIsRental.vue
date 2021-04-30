@@ -64,20 +64,6 @@ export default {
             document.getElementById('rentalItemImg' + k).style.backgroundImage = 'url(' + baseUrl + v.photo1 + ')';
         });
     },
-    // beforeMount: function() {
-    //         const self = this;
-    //         const myHttpClient = this.axios.create({
-    //             xsrfHeaderName: 'X-CSRF-Token',
-    //             withCredentials: true,
-    //         });
-    //         const itemRequest = new URLSearchParams();
-    //         itemRequest.append('user_id', this.userId.userid);
-    //         itemRequest.append('token', 'rentaled');
-    //         await myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function(res) {
-    //             self.rentaledItem = res.data;
-    //             console.log(res.data);
-    //         });
-    // },
     methods: {
         changePage: function(request) {
             const router = this.$router;
@@ -96,7 +82,6 @@ export default {
 }
 .rental-item-img {
     background-position: center center;
-    /* background-repeat: no-repeat; */
     background-size: contain;
     width: 60px;
     height: 60px;

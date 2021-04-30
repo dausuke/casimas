@@ -176,41 +176,6 @@ export default {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
-        // getItem: async function(id) {
-        //     const self = this;
-        //     const baseUrl = ;
-        //     this.url = baseUrl;
-
-        //     const myHttpClient = this.axios.create({
-        //         xsrfHeaderName: 'X-CSRF-Token',
-        //         withCredentials: true,
-        //     });
-        //     const itemRequest = new URLSearchParams();
-        //     itemRequest.append('item_id', id);
-        //     itemRequest.append('token', 'item_ditail');
-
-        //     await myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
-        //         self.itemData = res.data;
-        //         console.log(res.data);
-        //         console.log(self.userid);
-        //     });
-        // },
-        // getSeller: function() {
-        //     const self = this;
-        //     const baseUrl = methods.apiUrl.url;
-        //     const myHttpClient = this.axios.create({
-        //         xsrfHeaderName: 'X-CSRF-Token',
-        //         withCredentials: true,
-        //     });
-        //     const itemRequest = new URLSearchParams();
-        //     itemRequest.append('seller_id', this.itemData.seller_id);
-        //     itemRequest.append('token', 'seller');
-
-        //     myHttpClient.post(baseUrl + 'get_item.php', itemRequest).then(function(res) {
-        //         self.sellerHeight = res.data.height;
-        //         //console.log(res.data);
-        //     });
-        // },
         getPhoto: function() {
             this.url = methods.apiUrl.url;
             for (let i = 1; i <= 4; i++) {
@@ -226,12 +191,6 @@ export default {
         },
         rental: async function() {
             const self = this;
-            // const baseUrl = methods.apiUrl.url;
-            // const myHttpClient = this.axios.create({
-            //     xsrfHeaderName: 'X-CSRF-Token',
-            //     withCredentials: true,
-            // });
-            // const rentalData = new URLSearchParams();
             if (this.rentalData.plan != null && this.rentalData.price != null) {
                 await methods
                     .rentalAction({
@@ -245,17 +204,6 @@ export default {
                     .then(function() {
                         self.$bvModal.hide('modal-center1');
                     });
-                // rentalData.append('item_id', this.itemData.item_id);
-                // rentalData.append('seller_id', this.itemData.seller_id);
-                // rentalData.append('user_id', this.$store.state.auth.userid);
-                // rentalData.append('plan', this.rentalData.plan);
-                // rentalData.append('transaction_price', this.rentalData.price);
-                // rentalData.append('token', 'rental');
-
-                // myHttpClient.post(baseUrl + 'rental.php', rentalData).then(function(res) {
-                //     console.log(res.data);
-                //
-                // });
                 this.$bvModal.show('modal-center2');
             } else {
                 this.errorMessage = 'プランを選択してください';
@@ -275,21 +223,6 @@ export default {
                     alert('返却が完了しました');
                     self.$router.push({ name: 'Home' });
                 });
-            //
-            // const self = this;
-            // const baseUrl = methods.apiUrl.url;
-            // const myHttpClient = this.axios.create({
-            //     xsrfHeaderName: 'X-CSRF-Token',
-            //     withCredentials: true,
-            // });
-            // const itemRequest = new URLSearchParams();
-            // itemRequest.append('rental_state_id', this.itemData.rental_state_id);
-            // itemRequest.append('token', 'return');
-
-            // myHttpClient.post(baseUrl + 'rental.php', itemRequest).then(function() {
-            //     //console.log(res)
-            //
-            // });
         },
         dataSet: function() {
             this.itemData = this.$store.state.itemDitail;

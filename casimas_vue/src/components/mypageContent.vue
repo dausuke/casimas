@@ -31,49 +31,31 @@
     </div>
 </template>
 <script>
-//import footerMenu from '../footerMenu.vue';
 import methods from '../methods';
 export default {
     data() {
         return {
             userData: {},
             pleviewImgUrl: null,
-            apiUrl: '',
+            apiUrl: methods.apiUrl.url,
         };
     },
     props: {
         userId: String,
     },
-    beforeMount: async function() {
-        await this.getUser();
-        // if (this.userData.profile_img != null) {
-        document.getElementById('profileImg').style.backgroundImage = 'url(' + this.apiUrl + this.userData.profile_img + ')';
-        // }
+    created: async function() {
+        const self = this;
+        await methods
+            .mypageAction({
+                token: 'getuser',
+                userId: this.$store.state.auth.userid,
+            })
+            .then(value => {
+                self.userData = value;
+            });
+        document.getElementById('profileImg').style.backgroundImage = 'url(' + self.apiUrl + self.userData.profile_img + ')';
     },
     methods: {
-        getUser: async function() {
-            const baseUrl = methods.apiUrl.url;
-            this.apiUrl = baseUrl;
-            const self = this;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const userId = new URLSearchParams();
-            userId.append('user_id', this.userId);
-            userId.append('token', 'getuser');
-
-            await myHttpClient
-                .post(baseUrl + 'mypage.php', userId)
-                .then(function(res) {
-                    console.log(res);
-                    self.userData = res.data;
-                })
-                .catch(function() {
-                    alert('通信エラーが発生しました');
-                })
-                .finally(function() {});
-        },
         submit: async function() {
             await this.updateProfileImg();
             this.changeProfileImg();
@@ -136,35 +118,12 @@ export default {
             console.log(this.userData.profile_img);
         },
         uploadFile() {
-            console.log('hoge');
             const file = this.$refs.userImgFile.files[0];
             this.imgUrl = file;
             this.pleviewImgUrl = URL.createObjectURL(file);
             document.getElementById('pleviewImg').style.backgroundImage = 'url(' + this.pleviewImgUrl + ')';
         },
     },
-    // watch: {
-    //     submit: {
-    //         handler: function() {
-    //             const self = this;
-    //             const baseUrl = methods.apiUrl.url;
-    //             this.url = baseUrl;
-    //             const myHttpClient = this.axios.create({
-    //                 xsrfHeaderName: 'X-CSRF-Token',
-    //                 withCredentials: true,
-    //             });
-    //             const userId = new URLSearchParams();
-
-    //             userId.append('user_id', this.userId.userid);
-    //             userId.append('token', 'get_profile_img');
-
-    //             myHttpClient.post(baseUrl + 'mypage.php', userId).then(function(res) {
-    //                 console.log(res);
-    //                 self.imgUrl = res.data;
-    //             });
-    //         },
-    //     },
-    // },
 };
 </script>
 <style scoped>
@@ -174,7 +133,7 @@ ul li {
     height: 120px;
 }
 .mypage-seller-icon {
-    background-image:url(../../img/background.jpg);
+    background-image: url(../../img/background.jpg);
     background-position: center center;
     /* background-repeat: no-repeat; */
     background-size: contain;

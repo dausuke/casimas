@@ -56,24 +56,6 @@ export default {
                 self.sellingItem = value;
             });
     },
-    // beforeMount: function() {
-    //     const self = this;
-    //     const baseUrl = methods.apiUrl.url;
-    //     this.url = baseUrl;
-    //     const myHttpClient = this.axios.create({
-    //         xsrfHeaderName: 'X-CSRF-Token',
-    //         withCredentials: true,
-    //     });
-    //     const userId = new URLSearchParams();
-
-    //     userId.append('seller_id', this.userId.userid);
-    //     userId.append('token', this.token);
-
-    //     myHttpClient.post(baseUrl + 'get_item.php', userId).then(function(res) {
-    //         console.log(res);
-    //         self.sellingItem = res.data;
-    //     });
-    // },
     methods: {
         changePage: function(request) {
             const router = this.$router;

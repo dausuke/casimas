@@ -36,10 +36,8 @@ $capsule->addConnection([
 
 //関数読み込み
 include("functions.php");
-//cors_config();
 
 $capsule->bootEloquent();
-//cors_config();
 
 //ユーザー情報取得
 function getUser($user_id)
@@ -151,17 +149,55 @@ function get_profile_img($user_id)
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }
+function uodate_account($user_data)
+{
+    $pdo = connect_to_db();
+
+    $sql = 'UPDATE user_data SET address=:address,phone=:phone WHERE userid=:userid';
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':userid', $user_data['user_id'], PDO::PARAM_STR);
+    $stmt->bindValue(':address', $user_data['address'], PDO::PARAM_STR);
+    $stmt->bindValue(':phone', $user_data['phone'], PDO::PARAM_STR);
+
+    $status = $stmt->execute();
+    // データ登録処理後
+    if ($status == false) {
+        // SQL実行に失敗した場合はここでエラーを出力し，以降の処理を中止する
+        $error = $stmt->errorInfo();
+        echo json_encode(["error_msg" => "{$error[2]}"]);
+        exit();
+    } else {
+        $sql = 'UPDATE users SET email=:email WHERE userid=:userid';
+
+        $stmt = $pdo->prepare($sql);
+
+        $stmt->bindValue(':userid', $user_data['user_id'], PDO::PARAM_STR);
+        $stmt->bindValue(':email', $user_data['email'], PDO::PARAM_STR);
+
+        $status = $stmt->execute();
+
+        if ($status == false) {
+            // SQL実行に失敗した場合はここでエラーを出力し，以降の処理を中止する
+            $error = $stmt->errorInfo();
+            echo json_encode(["error_msg" => "{$error[2]}"]);
+            exit();
+        }
+    }
+}
 //リクエストトークンにより処理実行
 if (filter_input(INPUT_POST, 'token')) {
     //プロフィール
     if ($_POST['token']=='getuser') {
         getUser($_POST);
-    //プロフィール更新
     } elseif ($_POST['token']=='updade_profile') {
         update_profile($_POST);
     } elseif ($_POST['token']=='update_profile_img') {
         update_profile_img($_POST);
     } elseif ($_POST['token']=='get_profile_img') {
         get_profile_img($_POST);
+    } elseif ($_POST['token']=='update_account') {
+        uodate_account($_POST);
     }
 }

@@ -107,8 +107,6 @@ const sellerAction = async requestData => {
         xsrfHeaderName: 'X-CSRF-Token',
         withCredentials: true,
     });
-    console.log(requestData);
-
     const itemData = new URLSearchParams();
     switch (requestData.token) {
         case 'edit':
@@ -129,4 +127,39 @@ const sellerAction = async requestData => {
             break;
     }
 };
-export default { changeUserPage, apiUrl, getItem, getSeller, rentalAction, sellerAction };
+const mypageAction = async requestData => {
+    const myHttpClient = Vue.axios.create({
+        xsrfHeaderName: 'X-CSRF-Token',
+        withCredentials: true,
+    });
+    const requestUserData = new URLSearchParams();
+    switch (requestData.token) {
+        case 'getuser':
+            requestUserData.append('token', requestData.token);
+            requestUserData.append('user_id', requestData.userId);
+            await myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(res => {
+                resposData = res.data;
+            });
+            return resposData;
+        case 'updade_profile':
+            requestUserData.append('token', requestData.token);
+            requestUserData.append('user_id', requestData.userId);
+            requestUserData.append('nickname', requestData.nickname);
+            requestUserData.append('introduction', requestData.introduction);
+            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then((res) => {
+                console.log(res)
+            });
+            break;
+        case 'update_account':
+            requestUserData.append('token', requestData.token);
+            requestUserData.append('user_id', requestData.userId);
+            requestUserData.append('address', requestData.address);
+            requestUserData.append('phone', requestData.phone);
+            requestUserData.append('email', requestData.email);
+            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then((res) => {
+                console.log(res)
+            });
+            break;
+    }
+};
+export default { changeUserPage, apiUrl, getItem, getSeller, rentalAction, sellerAction, mypageAction };

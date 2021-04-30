@@ -55,23 +55,6 @@ export default {
                 self.allItem = value;
             });
     },
-    // beforeMount: function() {
-    //     const self = this;
-    //     const baseUrl = methods.apiUrl.url;
-    //     this.url = baseUrl;
-    //     const myHttpClient = this.axios.create({
-    //         xsrfHeaderName: 'X-CSRF-Token',
-    //         withCredentials: true,
-    //     });
-    //     const requestItem = new URLSearchParams();
-
-    //     requestItem.append('token', 'all_item');
-
-    //     myHttpClient.post(baseUrl + 'get_item.php', requestItem).then(function(res) {
-    //         console.log(res)
-    //         self.allItem = res.data;
-    //     });
-    // },
     methods: {
         changePage: function(request) {
             const router = this.$router;
@@ -81,9 +64,6 @@ export default {
             this.$router.push({ name: 'item', query: { itemId: id } });
             console.log(id);
         },
-        // getAllItem: async function() {
-
-        // },
     },
 };
 </script>

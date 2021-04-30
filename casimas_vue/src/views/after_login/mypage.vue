@@ -58,30 +58,15 @@ export default {
         };
     },
     created: function() {
-    },
-    beforeMount:function(){
-            const self = this;
-            const baseUrl = methods.apiUrl.url;
-            this.url = baseUrl;
-
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
+        const self = this;
+        methods
+            .mypageAction({
+                token: 'getuser',
+                userId:this.$store.state.auth.userid
+            })
+            .then((value)=> {
+                self.mypageData = value;
             });
-            const userId = new URLSearchParams();
-            userId.append('user_id', this.data.userid);
-            userId.append('token','getuser')
-
-            myHttpClient
-                .post(baseUrl + 'mypage.php', userId)
-                .then(function(res) {
-                    console.log(res);
-                    self.mypageData = res.data;
-                })
-                .catch(function() {
-                    alert('通信エラーが発生しました');
-                })
-                .finally(function() {});
     },
     methods: {
         changePage: function(request) {

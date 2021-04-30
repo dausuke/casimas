@@ -151,26 +151,12 @@ export default {
             const self = this;
             methods
                 .sellerAction({
-                    token:'delete',
-                    itemId:this.itemId
-                }).then(
-                    self.$router.push({ name: 'Home' })
-                )
-            // const baseUrl = methods.apiUrl.url;
-            // const myHttpClient = this.axios.create({
-            //     xsrfHeaderName: 'X-CSRF-Token',
-            //     withCredentials: true,
-            // });
-            // const itemData = new URLSearchParams();
-            // itemData.append('item_id', this.itemId);
-            // itemData.append('token', 'delete');
-            // myHttpClient.post(baseUrl + 'edit_item.php', itemData).then(function() {
-            //     self.$router.push({ name: 'Home' });
-            // });
-            // this.$bvModal.hide('modal-center1');
+                    token: 'delete',
+                    itemId: this.itemId,
+                })
+                .then(self.$router.push({ name: 'Home' }));
         },
         editItem: function() {
-            //const self = this;
             methods
                 .sellerAction({
                     token: 'edit',
@@ -186,25 +172,6 @@ export default {
                     alert('商品を編集しました');
                     self.$router.push({ name: 'Home' });
                 });
-            // const baseUrl = methods.apiUrl.url;
-            // console.log(baseUrl);
-            // const myHttpClient = this.axios.create({
-            //     xsrfHeaderName: 'X-CSRF-Token',
-            //     withCredentials: true,
-            // });
-            // const itemData = new URLSearchParams();
-            // itemData.append('item_id', this.itemId);
-            // itemData.append('item_introductoin', this.itemData.item_introductoin);
-            // itemData.append('item_name', this.itemData.item_name);
-            // itemData.append('price_1m', this.itemData.price_1m);
-            // itemData.append('price_1w', this.itemData.price_1w);
-            // itemData.append('price_purchase', this.itemData.price_purchase);
-            // itemData.append('purchase_judg', this.purchaseJudg);
-            // itemData.append('token', 'edit');
-            // myHttpClient.post(baseUrl + 'edit_item.php', itemData).then(function() {
-            //     alert('商品を編集しました');
-            //     self.$router.push({ name: 'Home' });
-            // });
         },
     },
 };
