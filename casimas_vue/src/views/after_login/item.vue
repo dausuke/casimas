@@ -157,7 +157,6 @@ export default {
                 itemId: this.itemId,
             })
             .then((value)=> {
-                console.log(value);
                 self.itemData = value;
             });
         await methods

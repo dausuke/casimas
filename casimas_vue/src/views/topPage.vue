@@ -1,19 +1,19 @@
 <template>
     <div class="Top">
         <topHeader />
-        <HelloWorld />
+        <topPageContent />
     </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
+import topPageContent from '@/components/topPageContent.vue';
 import topHeader from '../components/topPageHeader';
 
 export default {
     name: 'Home',
     components: {
-        HelloWorld,
+        topPageContent,
         topHeader,
     },
 };

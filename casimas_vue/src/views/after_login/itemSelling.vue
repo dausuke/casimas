@@ -63,7 +63,6 @@ export default {
         },
         itemPage: function(id) {
             this.$router.push({ name: 'item', query: { itemId: id } });
-            console.log(id);
         },
     },
 };

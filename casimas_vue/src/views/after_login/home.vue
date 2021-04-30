@@ -51,7 +51,6 @@ export default {
                 token: 'all_item',
             })
             .then((value)=> {
-                console.log(value);
                 self.allItem = value;
             });
     },
@@ -62,7 +61,6 @@ export default {
         },
         itemPage: function(id) {
             this.$router.push({ name: 'item', query: { itemId: id } });
-            console.log(id);
         },
     },
 };
