@@ -171,13 +171,10 @@ function uodate_account($user_data)
         exit();
     } else {
         $user = Sentinel::findById($user_data['user_id']);
-
         $credentials = [
             'email' => $user_data['email'],
         ];
-
         $user = Sentinel::update($user, $credentials);
-
     }
 }
 //リクエストトークンにより処理実行

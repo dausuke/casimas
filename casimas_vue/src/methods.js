@@ -146,8 +146,7 @@ const mypageAction = async requestData => {
             requestUserData.append('user_id', requestData.userId);
             requestUserData.append('nickname', requestData.nickname);
             requestUserData.append('introduction', requestData.introduction);
-            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then((res) => {
-                console.log(res)
+            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(() => {
             });
             break;
         case 'update_account':
@@ -156,8 +155,7 @@ const mypageAction = async requestData => {
             requestUserData.append('address', requestData.address);
             requestUserData.append('phone', requestData.phone);
             requestUserData.append('email', requestData.email);
-            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then((res) => {
-                console.log(res)
+            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(() => {
             });
             break;
     }
