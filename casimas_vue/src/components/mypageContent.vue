@@ -183,8 +183,8 @@ ul li {
     background-position: center center;
     /* background-repeat: no-repeat; */
     background-size: contain;
-    width: 60px;
-    height: 60px;
+    width: 90px;
+    height: 90px;
     border-radius: 50%;
     margin: 0 auto;
 }
