@@ -2,6 +2,7 @@
 ini_set('display_errors', 1);
 
 //関数読み込み
+use Cartalyst\Sentinel\Native\Facades\Sentinel;
 use Illuminate\Database\Capsule\Manager as Capsule;
 
 require './vendor/autoload.php';
@@ -169,21 +170,16 @@ function uodate_account($user_data)
         echo json_encode(["error_msg" => "{$error[2]}"]);
         exit();
     } else {
-        $sql = 'UPDATE users SET email=:email WHERE userid=:userid';
+        $user = Sentinel::findById($user_data['user_id']);
+        var_dump($user);
+        exit();
 
-        $stmt = $pdo->prepare($sql);
+        $credentials = [
+            'email' => $user_data['email'],
+        ];
 
-        $stmt->bindValue(':userid', $user_data['user_id'], PDO::PARAM_STR);
-        $stmt->bindValue(':email', $user_data['email'], PDO::PARAM_STR);
+        $user = Sentinel::validForUpdate($user, $credentials);
 
-        $status = $stmt->execute();
-
-        if ($status == false) {
-            // SQL実行に失敗した場合はここでエラーを出力し，以降の処理を中止する
-            $error = $stmt->errorInfo();
-            echo json_encode(["error_msg" => "{$error[2]}"]);
-            exit();
-        }
     }
 }
 //リクエストトークンにより処理実行
