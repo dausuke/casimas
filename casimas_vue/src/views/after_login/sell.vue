@@ -206,7 +206,7 @@
                         <div class="form-group col-6">
                             <button
                                 type="button"
-                                class="btn btn-success form-control"
+                                class="btn btn-dark form-control"
                                 id="submitSellBtn"
                                 :disabled="ObserverProps.invalid || !ObserverProps.validated"
                                 @click="submititem"

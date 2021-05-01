@@ -9,6 +9,8 @@ html {
     font-size: 12px !important;
 }
 body {
+    font-family: Helvetica, Arial, Roboto, YuGothic, 'Meiryo UI', メイリオ, Meiryo, 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'ＭＳ Ｐゴシック',
+        'MS PGothic', sans-serif !important;
     background-color: rgb(247, 247, 248) !important;
 }
 .area {

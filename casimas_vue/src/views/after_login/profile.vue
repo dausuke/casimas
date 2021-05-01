@@ -15,7 +15,7 @@
                         <textarea class="form-control  introduction-area" name="introduction" id="introduction" v-model="userData.introduction"></textarea>
                     </div>
 
-                    <button type="button" class="btn btn-success w-50 mt-3 mt-lg-5" id="submitSellBtn" @click="updateProfile">
+                    <button type="button" class="btn btn-dark w-50 mt-3 mt-lg-5" id="submitSellBtn" @click="updateProfile">
                         変更する
                     </button>
                 </form>

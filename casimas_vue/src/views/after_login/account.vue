@@ -25,7 +25,7 @@
                     <input type="text" class="form-control" id="email" v-model="userData.email" />
                 </div>
                 <div class="form-group pb-lg-5 pb-3">
-                    <button type="button" class="btn btn-primary form-control w-50 mt-3 mt-lg-5" @click="updateaccount">
+                    <button type="button" class="btn btn-dark form-control w-50 mt-3 mt-lg-5" @click="updateaccount">
                         変更する
                     </button>
                 </div>

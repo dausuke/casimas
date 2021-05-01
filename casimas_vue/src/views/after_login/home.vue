@@ -20,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <button v-if="data.sellerid" class="btn btn-success p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
+            <button v-if="data.sellerid" class="btn btn-dark p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
         </main>
         <footerMenu @changePage="changePage"></footerMenu>
     </div>
@@ -67,8 +67,8 @@ export default {
 </script>
 <style scoped>
 .sell-btn {
-    height: 65px;
-    width: 65px;
+    height: 70px;
+    width: 70px;
     border-radius: 50%;
     font-weight: bold;
     position: fixed;

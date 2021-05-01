@@ -75,13 +75,13 @@
                 </dl>
             </div>
             <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!itemData.rental_state_id">
-                <button v-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center1>
+                <button v-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center1>
                     レンタル希望を送る
                 </button>
-                <button v-else type="button" class="btn btn-success" @click="editItem">編集する</button>
+                <button v-else type="button" class="btn btn-dark" @click="editItem">編集する</button>
             </div>
             <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-else-if="itemData.rental_user_id == userid.userid">
-                <button type="button" class="btn btn-success" id="rentalBtn" v-b-modal.modal-center3>
+                <button type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center3>
                     返却通知を送る
                 </button>
             </div>
@@ -101,14 +101,14 @@
                     <p class="text-danger text-center" v-show="errorMessage">{{ errorMessage }}</p>
                 </div>
                 <footer id="modal-center___BV_modal_footer_" class="modal-footer pb-0">
-                    <button type="button" class="btn btn-success" @click="rental">レンタルする</button>
+                    <button type="button" class="btn btn-dark" @click="rental">レンタルする</button>
                     <button type="button" class="btn btn-outline-secondary" @click="modalClose1">キャンセル</button>
                 </footer>
             </b-modal>
             <b-modal id="modal-center2" centered title="商品をレンタルしました" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__succes_rental">
-                    <button type="button" class="btn btn-success mb-3"><router-link to="/Home">ホームへ</router-link></button>
-                    <button type="button" class="btn btn-success"><router-link to="/itemIsRental">レンタル中の商品一覧</router-link></button>
+                    <button type="button" class="btn btn-dark mb-3"><router-link to="/Home">ホームへ</router-link></button>
+                    <button type="button" class="btn btn-dark"><router-link to="/itemIsRental">レンタル中の商品一覧</router-link></button>
                 </div>
             </b-modal>
             <b-modal id="modal-center3" centered title="返却通知の送信" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
@@ -116,7 +116,7 @@
                     <p>商品の返送は完了していますか？</p>
                 </div>
                 <footer class="modal-footer pb-0">
-                    <button type="button" class="btn btn-success" @click="returnItem">はい</button>
+                    <button type="button" class="btn btn-dark" @click="returnItem">はい</button>
                     <button type="button" class="btn btn-outline-secondary" @click="modalClose3">キャンセル</button>
                 </footer>
             </b-modal>

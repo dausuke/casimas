@@ -88,15 +88,15 @@
                     <p>商品を削除してよろしいですか？</p>
                 </div>
                 <footer id="modal-center___BV_modal_footer_" class="modal-footer pb-0">
-                    <button type="button" class="btn btn-success" @click="deletItem">削除する</button>
+                    <button type="button" class="btn btn-dark" @click="deletItem">削除する</button>
                     <button type="button" class="btn btn-outline-secondary" @click="modalClose">キャンセル</button>
                 </footer>
             </b-modal>
             <div class="row mt-3 m-0 w-100 justify-content-center align-items-center flex-column" id="btn_area">
-                <button type="button" class="btn btn-success col-6" @click="editItem">
+                <button type="button" class="btn btn-dark col-6" @click="editItem">
                     更新
                 </button>
-                <button type="button" class="btn btn-success col-6 mt-3" v-b-modal.modal-center1>
+                <button type="button" class="btn btn-dark col-6 mt-3" v-b-modal.modal-center1>
                     商品を削除する
                 </button>
             </div>
