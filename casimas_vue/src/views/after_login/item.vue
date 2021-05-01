@@ -4,6 +4,7 @@
         <main class="container-fulid user-content">
             <div class="row area m-0 w-100 justify-content-center">
                 <div class="col-12 itemimg-area">
+                    <!-- <itemPhoto :itemData="itemData"></itemPhoto> -->
                     <ul class="d-flex justify-content-center p-0 m-0">
                         <li>
                             <div class="item-img">
@@ -128,12 +129,16 @@
 <script>
 import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
+//import itemPhoto from '../../components/itemphoto'
 import methods from '../../methods';
+//import * as types from '../../store/mutation-types';
+
 
 export default {
     components: {
         mainHeaderBack,
         footerMenu,
+        // itemPhoto
     },
     data() {
         return {
@@ -156,7 +161,7 @@ export default {
                 token: 'item_ditail',
                 itemId: this.itemId,
             })
-            .then((value)=> {
+            .then(value => {
                 self.itemData = value;
             });
         await methods
@@ -164,7 +169,7 @@ export default {
                 token: 'seller',
                 sellerId: this.itemData.seller_id,
             })
-            .then((value)=> {
+            .then(value => {
                 console.log(value);
                 self.sellerHeight = value;
             });
@@ -176,7 +181,6 @@ export default {
             methods.changeUserPage(request, router);
         },
         getPhoto: function() {
-            this.url = methods.apiUrl.url;
             for (let i = 1; i <= 4; i++) {
                 const imgUrl = this.url + document.getElementById('imgContent' + i).dataset.url;
                 document.getElementById('imgContent' + i).style.backgroundImage = 'url(' + imgUrl + ')';
@@ -188,13 +192,15 @@ export default {
         modalClose3: function() {
             this.$bvModal.hide('modal-center3');
         },
+        submitRentalRequest: function() {},
         rental: async function() {
-            const self = this;
+            const self = this
             if (this.rentalData.plan != null && this.rentalData.price != null) {
                 await methods
                     .rentalAction({
                         token: 'rental',
-                        itemId: this.itemData.item_id,
+                        itemId:this.itemData.item_id,
+                        itemName: this.itemData.item_name,
                         sellerId: this.itemData.seller_id,
                         userId: this.$store.state.auth.userid,
                         plan: this.rentalData.plan,
@@ -244,6 +250,18 @@ export default {
 </script>
 
 <style scoped>
+.itemimg-area ul li {
+    list-style: none;
+    margin: 1rem;
+}
+.img-content {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    height: 80px;
+    width: 80px;
+    margin: 5px;
+}
 .item-state dt {
     width: 96px;
     padding: 12px;
@@ -266,18 +284,6 @@ export default {
 .item-state :nth-child(5),
 .item-state :nth-child(6) {
     border-bottom: 1px solid #eee;
-}
-.itemimg-area ul li {
-    list-style: none;
-    margin: 1rem;
-}
-.img-content {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 80px;
-    width: 80px;
-    margin: 5px;
 }
 .modal-body__select_plan {
     margin: 0 auto !important;

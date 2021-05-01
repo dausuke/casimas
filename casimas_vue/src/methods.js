@@ -22,11 +22,12 @@ const changeUserPage = (resData, router) => {
     }
 };
 const apiUrl = {
-    url: 'https://casimas.lolipop.io/casimas_php/',
+    // url: 'https://casimas.lolipop.io/casimas_php/',
     // url: '../../casimas_php/',
+    url: 'http://localhost/CASIMAS/casimas_php/',
 };
-let resposData = {};
 
+let resposData = {};
 const getItem = async requestData => {
     const myHttpClient = Vue.axios.create({
         xsrfHeaderName: 'X-CSRF-Token',
@@ -90,11 +91,16 @@ const rentalAction = async requestData => {
             rentalData.append('token', requestData.token);
             rentalData.append('user_id', requestData.userId);
             rentalData.append('item_id', requestData.itemId);
+            rentalData.append('item_name', requestData.itemName);
             rentalData.append('seller_id', requestData.sellerId);
             rentalData.append('plan', requestData.plan);
             rentalData.append('transaction_price', requestData.transactionPlace);
-            myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(() => {});
-            break;
+            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(res => {
+                console.log(res.data)
+                //resposData = res.data;
+            });
+            break
+            // return resposData;
         case 'return':
             rentalData.append('rental_state_id', requestData.rentalStateId);
             rentalData.append('token', requestData.token);
@@ -146,8 +152,7 @@ const mypageAction = async requestData => {
             requestUserData.append('user_id', requestData.userId);
             requestUserData.append('nickname', requestData.nickname);
             requestUserData.append('introduction', requestData.introduction);
-            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(() => {
-            });
+            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(() => {});
             break;
         case 'update_account':
             requestUserData.append('token', requestData.token);
@@ -155,8 +160,7 @@ const mypageAction = async requestData => {
             requestUserData.append('address', requestData.address);
             requestUserData.append('phone', requestData.phone);
             requestUserData.append('email', requestData.email);
-            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(() => {
-            });
+            myHttpClient.post(apiUrl.url + 'mypage.php', requestUserData).then(() => {});
             break;
     }
 };

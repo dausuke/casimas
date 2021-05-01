@@ -22,7 +22,7 @@
             </div>
             <button v-if="data.sellerid" class="btn btn-dark p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 <script>
@@ -42,17 +42,21 @@ export default {
             data: this.$store.state.auth,
             allItem: null,
             url: methods.apiUrl.url,
+            noticeContent: null,
+            noticeCnt: null,
         };
     },
-    created: function() {
+    created: async function() {
         const self = this;
-        methods
+        await methods
             .getItem({
                 token: 'all_item',
             })
-            .then((value)=> {
+            .then(value => {
                 self.allItem = value;
             });
+        await this.checkRentalRequest();
+        this.$store.commit('notice/getNotice', this.noticeContent);
     },
     methods: {
         changePage: function(request) {
@@ -61,6 +65,22 @@ export default {
         },
         itemPage: function(id) {
             this.$router.push({ name: 'item', query: { itemId: id } });
+        },
+        checkRentalRequest: async function() {
+            if (this.$store.state.auth.sellerid) {
+                const self = this;
+                const myHttpClient = this.axios.create({
+                    xsrfHeaderName: 'X-CSRF-Token',
+                    withCredentials: true,
+                });
+                const requestId = new URLSearchParams();
+                requestId.append('seller_id', this.$store.state.auth.sellerid);
+                await myHttpClient.post(methods.apiUrl.url + 'notice_action.php', requestId).then(res => {
+                    console.log(res.data);
+                    this.noticeContent = res.data;
+                    self.noticeCnt = res.data.length;
+                });
+            }
         },
     },
 };
