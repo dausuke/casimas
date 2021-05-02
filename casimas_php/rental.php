@@ -125,7 +125,7 @@ function rental($rental_data)
             exit('sqlError:' . $error[2]);
         } else {
             $request_id=$rental_data['request_id'];
-            $sql = 'UPDATE rental_request SET request_state=2,updated_at=sysdate() WHERE request_id=:request_id';
+            $sql = 'UPDATE rental_request SET request_state=2,check_user=0,updated_at=sysdate() WHERE request_id=:request_id';
 
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':request_id', $request_id, PDO::PARAM_STR);
