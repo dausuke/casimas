@@ -1,14 +1,14 @@
 //レンタル通知
 function rentalRequestNotice() {
     return {
-        contents:{}
+        content:{},
     };
 }
 const state = rentalRequestNotice();
 
 const mutations = {
     getNotice(state, request) {
-        state.contents = request
+        state.content = request
     },
 };
 

@@ -13,6 +13,7 @@ import notice from '../views/after_login/notice';
 import item from '../views/after_login/item';
 import editItem from '../views/after_login/editItem';
 import category from '../views/after_login/category';
+import noticeContent from '../components/noticeContent'
 
 //マイページ内
 import profile from '../views/after_login/profile';
@@ -86,6 +87,12 @@ const routes = [
         path: '/editItem',
         name: 'editItem',
         component: editItem,
+    },
+    {
+        //レンタル希望
+        path: '/noticeContent',
+        name: 'noticeContent',
+        component: noticeContent,
     },
 
     //マイページ内

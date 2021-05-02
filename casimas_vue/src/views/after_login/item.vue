@@ -75,7 +75,7 @@
                     <dd class="p-0 col-6">{{ sellerHeight.height }}cm</dd>
                 </dl>
             </div>
-            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!itemData.rental_state_id">
+            <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!type && !itemData.rental_state_id">
                 <button v-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center1>
                     レンタル希望を送る
                 </button>
@@ -86,6 +86,7 @@
                     返却通知を送る
                 </button>
             </div>
+
             <b-modal id="modal-center1" centered title="プランを選択" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__select_plan">
                     <div class="form-group d-flex flex-column">
@@ -102,14 +103,13 @@
                     <p class="text-danger text-center" v-show="errorMessage">{{ errorMessage }}</p>
                 </div>
                 <footer id="modal-center___BV_modal_footer_" class="modal-footer pb-0">
-                    <button type="button" class="btn btn-dark" @click="rental">レンタルする</button>
+                    <button type="button" class="btn btn-dark" @click="rental">レンタル希望を送る</button>
                     <button type="button" class="btn btn-outline-secondary" @click="modalClose1">キャンセル</button>
                 </footer>
             </b-modal>
-            <b-modal id="modal-center2" centered title="商品をレンタルしました" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
+            <b-modal id="modal-center2" centered title="レンタル希望を送信しました" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
                 <div class="col-8 m-0 p-0 d-flex flex-column modal-body__succes_rental">
                     <button type="button" class="btn btn-dark mb-3"><router-link to="/Home">ホームへ</router-link></button>
-                    <button type="button" class="btn btn-dark"><router-link to="/itemIsRental">レンタル中の商品一覧</router-link></button>
                 </div>
             </b-modal>
             <b-modal id="modal-center3" centered title="返却通知の送信" no-close-on-backdrop="true" no-close-on-esc="true" hide-footer="true">
@@ -131,8 +131,6 @@ import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
 //import itemPhoto from '../../components/itemphoto'
 import methods from '../../methods';
-//import * as types from '../../store/mutation-types';
-
 
 export default {
     components: {
@@ -143,6 +141,7 @@ export default {
     data() {
         return {
             itemId: this.$route.query.itemId,
+            type: this.$route.query.type,
             itemData: null,
             sellerHeight: null,
             url: methods.apiUrl.url,
@@ -194,12 +193,12 @@ export default {
         },
         submitRentalRequest: function() {},
         rental: async function() {
-            const self = this
+            const self = this;
             if (this.rentalData.plan != null && this.rentalData.price != null) {
                 await methods
                     .rentalAction({
                         token: 'rental',
-                        itemId:this.itemData.item_id,
+                        itemId: this.itemData.item_id,
                         itemName: this.itemData.item_name,
                         sellerId: this.itemData.seller_id,
                         userId: this.$store.state.auth.userid,

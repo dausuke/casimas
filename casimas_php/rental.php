@@ -58,7 +58,24 @@ function rental_request($rental_data)
         $error = $stmt->errorInfo();
         echo json_encode(["error_msg" => "{$error[2]}"]);
         exit();
-    } 
+    }
+}
+function request_reject($request_id)
+{
+    $pdo = connect_to_db();
+
+    $sql = 'UPDATE rental_request SET request_state=0 WHERE request_id=:request_id';
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindValue(':request_id', $request_id, PDO::PARAM_STR);
+
+    $status = $stmt->execute();
+    if ($status == false) {
+        // SQL実行に失敗した場合はここでエラーを出力し，以降の処理を中止する
+        $error = $stmt->errorInfo();
+        echo json_encode(["error_msg" => "{$error[2]}"]);
+        exit();
+    }
 }
 function rental($rental_data)
 {
@@ -102,6 +119,25 @@ function rental($rental_data)
         $stmt->bindValue(':return_date', $return_date, PDO::PARAM_STR);
 
         $status = $stmt->execute();
+        if ($status == false) {
+            $error = $stmt->errorInfo();
+            // データ登録失敗次にエラーを表示
+            exit('sqlError:' . $error[2]);
+        } else {
+            $request_id=$rental_data['request_id'];
+            $sql = 'UPDATE rental_request SET request_state=2 WHERE request_id=:request_id';
+
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindValue(':request_id', $request_id, PDO::PARAM_STR);
+
+            $status = $stmt->execute();
+            if ($status == false) {
+                // SQL実行に失敗した場合はここでエラーを出力し，以降の処理を中止する
+                $error = $stmt->errorInfo();
+                echo json_encode(["error_msg" => "{$error[2]}"]);
+                exit();
+            }
+        }
     }
 }
 
@@ -126,7 +162,10 @@ function return_item($rental_state_id)
 if (filter_input(INPUT_POST, 'token')) {
     if ($_POST['token']=='rental') {
         rental_request($_POST);
-    //rental($_POST);
+    } elseif ($_POST['token']=='reject') {
+        request_reject($_POST['request_id']);
+    } elseif ($_POST['token']=='approval') {
+        rental($_POST);
     } elseif ($_POST['token']=='return') {
         return_item($_POST['rental_state_id']);
     }

@@ -26,8 +26,8 @@ const apiUrl = {
     // url: '../../casimas_php/',
     url: 'http://localhost/CASIMAS/casimas_php/',
 };
-
 let resposData = {};
+
 const getItem = async requestData => {
     const myHttpClient = Vue.axios.create({
         xsrfHeaderName: 'X-CSRF-Token',
@@ -95,12 +95,27 @@ const rentalAction = async requestData => {
             rentalData.append('seller_id', requestData.sellerId);
             rentalData.append('plan', requestData.plan);
             rentalData.append('transaction_price', requestData.transactionPlace);
+            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(() => {});
+            break;
+        case 'approval':
+            rentalData.append('token', requestData.token);
+            rentalData.append('user_id', requestData.userId);
+            rentalData.append('item_id', requestData.itemId);
+            rentalData.append('seller_id', requestData.sellerId);
+            rentalData.append('plan', requestData.plan);
+            rentalData.append('transaction_price', requestData.transactionPlace);
+            rentalData.append('request_id', requestData.requestId);
             await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(res => {
-                console.log(res.data)
-                //resposData = res.data;
+                console.log(res);
             });
-            break
-            // return resposData;
+            break;
+        case 'reject':
+            rentalData.append('token', requestData.token);
+            rentalData.append('request_id', requestData.request_id);
+            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(res => {
+                console.log(res);
+            });
+            break;
         case 'return':
             rentalData.append('rental_state_id', requestData.rentalStateId);
             rentalData.append('token', requestData.token);
@@ -164,4 +179,28 @@ const mypageAction = async requestData => {
             break;
     }
 };
-export default { changeUserPage, apiUrl, getItem, getSeller, rentalAction, sellerAction, mypageAction };
+const checkNotice = async requestData => {
+    const myHttpClient = Vue.axios.create({
+        xsrfHeaderName: 'X-CSRF-Token',
+        withCredentials: true,
+    });
+    const requestCheckData = new URLSearchParams();
+    switch (requestData.token) {
+        case 'seller_check':
+            requestCheckData.append('token', requestData.token);
+            requestCheckData.append('seller_id', requestData.sellerid);
+            await myHttpClient.post(apiUrl.url + 'notice_action.php', requestCheckData).then(res => {
+                resposData = res.data;
+            });
+            return resposData;
+        case 'user_check':
+            requestCheckData.append('token', requestData.token);
+            requestCheckData.append('user_id', requestData.userid);
+            await myHttpClient.post(apiUrl.url + 'notice_action.php', requestCheckData).then(res => {
+                console.log(res)
+                resposData = res.data;
+            });
+            return resposData;
+    }
+};
+export default { changeUserPage, apiUrl, getItem, getSeller, rentalAction, checkNotice, sellerAction, mypageAction };

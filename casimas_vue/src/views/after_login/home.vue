@@ -42,7 +42,7 @@ export default {
             data: this.$store.state.auth,
             allItem: null,
             url: methods.apiUrl.url,
-            noticeContent: null,
+            noticeContent: [],
             noticeCnt: null,
         };
     },
@@ -56,7 +56,7 @@ export default {
                 self.allItem = value;
             });
         await this.checkRentalRequest();
-        this.$store.commit('notice/getNotice', this.noticeContent);
+        this.$store.commit('notice/getNotice', this.noticeContent[0]);
     },
     methods: {
         changePage: function(request) {
@@ -67,20 +67,42 @@ export default {
             this.$router.push({ name: 'item', query: { itemId: id } });
         },
         checkRentalRequest: async function() {
+            await methods
+                .checkNotice({
+                    token: 'user_check',
+                    userid: this.$store.state.auth.userid,
+                })
+                .then(value => {
+                    console.log(value);
+                    if (value) {
+                        this.noticeContent.push(value);
+                    }
+                    //self.noticeCnt = value.data.length;
+                });
+            await this.checkRentalRequestSeller();
+        },
+        checkRentalRequestSeller: async function() {
             if (this.$store.state.auth.sellerid) {
-                const self = this;
-                const myHttpClient = this.axios.create({
-                    xsrfHeaderName: 'X-CSRF-Token',
-                    withCredentials: true,
-                });
-                const requestId = new URLSearchParams();
-                requestId.append('seller_id', this.$store.state.auth.sellerid);
-                await myHttpClient.post(methods.apiUrl.url + 'notice_action.php', requestId).then(res => {
-                    console.log(res.data);
-                    this.noticeContent = res.data;
-                    self.noticeCnt = res.data.length;
-                });
+                await methods
+                    .checkNotice({
+                        token: 'seller_check',
+                        sellerid: this.$store.state.auth.sellerid,
+                    })
+                    .then(value => {
+                        console.log(value);
+                        if (value) {
+                            this.noticeContent.push(value);
+                        }
+                    });
             }
+        },
+    },
+    watch: {
+        noticeContent: {
+            deep: true,
+            handler: function() {
+                this.noticeCnt = this.noticeContent[0].length;
+            },
         },
     },
 };
