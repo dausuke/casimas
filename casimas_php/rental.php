@@ -12,27 +12,27 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 //DBの設定
-// $db_host = $_ENV['DB_HOST'];
-// $db_name = $_ENV['DB_NAME'];
-// $db_pass = $_ENV['DB_PASS'];
-// $capsule->addConnection([
-//     'driver'    => 'mysql',
-//     'host'      => $db_host,
-//     'database'  => $db_name,
-//     'username'  => $db_name,
-//     'password'  => $db_pass,
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ]);
+$db_host = $_ENV['DB_HOST'];
+$db_name = $_ENV['DB_NAME'];
+$db_pass = $_ENV['DB_PASS'];
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'casimas',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $db_host,
+    'database'  => $db_name,
+    'username'  => $db_name,
+    'password'  => $db_pass,
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ]);
+// $capsule->addConnection([
+//     'driver'    => 'mysql',
+//     'host'      => 'localhost',
+//     'database'  => 'casimas',
+//     'username'  => 'root',
+//     'password'  => '',
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ]);
 
 //関数読み込み
 include("functions.php");
@@ -158,6 +158,27 @@ function return_item($rental_state_id)
         exit('sqlError:' . $error[2]);
     }
 }
+function check_rental_request_item($request_check_data)
+{
+    $pdo = connect_to_db();
+
+    $sql='SELECT request_state FROM rental_request WHERE request_user=:userid AND request_item=:item_id AND request_state=1';
+
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->bindValue(':userid', $request_check_data['user_id'], PDO::PARAM_INT);
+    $stmt->bindValue(':item_id', $request_check_data['item_id'], PDO::PARAM_INT);
+
+    $status = $stmt->execute();
+    if ($status == false) {
+        $error = $stmt->errorInfo();
+        echo json_encode(["error_msg" => "{$error[2]}"]);
+        exit();
+    } else {
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+}
 
 if (filter_input(INPUT_POST, 'token')) {
     if ($_POST['token']=='rental') {
@@ -168,5 +189,7 @@ if (filter_input(INPUT_POST, 'token')) {
         rental($_POST);
     } elseif ($_POST['token']=='return') {
         return_item($_POST['rental_state_id']);
+    } elseif ($_POST['token']=='check_rental_request_item') {
+        check_rental_request_item($_POST);
     }
 }

@@ -76,7 +76,8 @@
                 </dl>
             </div>
             <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!type && !itemData.rental_state_id">
-                <button v-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center1>
+                <p v-if="requestState=='1'">出品者のレンタル希望承認を待っています</p>
+                <button v-else-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center1>
                     レンタル希望を送る
                 </button>
                 <button v-else type="button" class="btn btn-dark" @click="editItem">編集する</button>
@@ -152,6 +153,7 @@ export default {
             userid: this.$store.state.auth,
             errorMessage: null,
             noticeCnt: this.$store.state.notice.noticeCnt,
+            requestState: null,
         };
     },
     created: async function() {
@@ -174,6 +176,7 @@ export default {
                 self.sellerHeight = value;
             });
         await this.getPhoto();
+        this.checkRrequestState();
     },
     methods: {
         changePage: function(request) {
@@ -232,6 +235,21 @@ export default {
         dataSet: function() {
             this.itemData = this.$store.state.itemDitail;
             this.sellerHeight = this.$store.state.sellerInfo.height;
+        },
+        checkRrequestState: function() {
+            const myHttpClient = this.axios.create({
+                xsrfHeaderName: 'X-CSRF-Token',
+                withCredentials: true,
+            });
+            const requestCheckData = new URLSearchParams();
+            const self = this;
+            requestCheckData.append('token', 'check_rental_request_item');
+            requestCheckData.append('item_id', this.$route.query.itemId);
+            requestCheckData.append('user_id', this.$store.state.auth.userid);
+            myHttpClient.post(methods.apiUrl.url + 'rental.php', requestCheckData).then(res => {
+                console.log(res);
+                self.requestState = res.data.request_state;
+            });
         },
     },
     watch: {
