@@ -43,7 +43,7 @@ export default {
             allItem: null,
             url: methods.apiUrl.url,
             noticeContent: [],
-            noticeCnt: null,
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: async function() {
@@ -57,6 +57,35 @@ export default {
             });
         await this.checkRentalRequest();
         this.$store.commit('notice/getNotice', this.noticeContent[0]);
+    },
+    mounted: async function() {
+        const myHttpClient = this.axios.create({
+            xsrfHeaderName: 'X-CSRF-Token',
+            withCredentials: true,
+        });
+        const countId = new URLSearchParams();
+        const self = this;
+        countId.append('token', 'cnt_user_notice');
+        countId.append('user_id', this.$store.state.auth.userid);
+        myHttpClient.post(methods.apiUrl.url + 'notice_action.php', countId).then(res => {
+            console.log(res);
+            let cnt = parseInt(res.data.cnt);
+            self.$store.commit('notice/noticeCount', cnt);
+            if (this.$store.state.auth.sellerid) {
+                const myHttpClient = this.axios.create({
+                    xsrfHeaderName: 'X-CSRF-Token',
+                    withCredentials: true,
+                });
+                const countId = new URLSearchParams();
+                countId.append('token', 'cnt_seller_notice');
+                countId.append('seller_id', this.$store.state.auth.sellerid);
+                myHttpClient.post(methods.apiUrl.url + 'notice_action.php', countId).then(res => {
+                    console.log(res);
+                    cnt += parseInt(res.data.cnt);
+                    self.$store.commit('notice/noticeCount', cnt);
+                });
+            }
+        });
     },
     methods: {
         changePage: function(request) {
@@ -74,7 +103,7 @@ export default {
                 })
                 .then(value => {
                     console.log(value);
-                    if (value !='') {
+                    if (value != '') {
                         this.noticeContent.push(value);
                     }
                     //self.noticeCnt = value.data.length;
@@ -97,14 +126,16 @@ export default {
             }
         },
     },
-    watch: {
-        noticeContent: {
-            deep: true,
-            handler: function() {
-                this.noticeCnt = this.noticeContent[0].length;
-            },
-        },
-    },
+    // watch: {
+    //     noticeContent: {
+    //         deep: true,
+    //         handler:async function() {
+    //            await this.$store.commit('notice/noticeContent')
+    //             this.noticeCnt = this.$store.state.notice.noticeCnt
+    //             //this.noticeContent[0].length;
+    //         }
+    //     }
+    // }
 };
 </script>
 <style scoped>

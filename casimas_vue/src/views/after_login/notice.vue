@@ -19,7 +19,7 @@
                 </div>
                 <div v-else-if="this.showContent == 'notice'" class="row justify-content-center" id="noticeArea">
                     <div class="col-12 info-contents">
-                        <span v-if="!notice">レンタル希望はありません</span>
+                        <span v-if="!notice.length">レンタル希望はありません</span>
                         <div v-else class=" w-100">
                             <noticeList :notice="notice"></noticeList>
                         </div>
@@ -27,7 +27,7 @@
                 </div>
             </div>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 <script>
@@ -47,6 +47,7 @@ export default {
             showContent: 'info',
             notice: this.$store.state.notice.content,
             info: this.$store.state.info,
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     methods: {
@@ -70,6 +71,4 @@ export default {
     },
 };
 </script>
-<style scoped>
-
-</style>
+<style scoped></style>

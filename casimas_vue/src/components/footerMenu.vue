@@ -13,7 +13,7 @@
                         <p @click="$emit('changePage', 'favorite')">いいね</p>
                     </div>
                     <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
-                        <div v-if="noticeCnt" class="notice-cnt">{{ noticeCnt }}</div>
+                        <div v-if="noticeCnt>0" class="notice-cnt">{{ noticeCnt }}</div>
                         <p @click="$emit('changePage', 'notice')">通知</p>
                     </div>
                     <div class="col-lg col p-0 px-lg-3 d-flex justify-content-center">
@@ -44,11 +44,11 @@ export default {
 .notice-cnt{
     width: 20px;
     height: 20px;
-    border: solid 1px red;
+    border: solid 1px rgb(248, 52, 52);
     border-radius: 50%;
     color: white;
     font-weight: bold;
-    background-color: red;
+    background-color: rgb(248, 52, 52);
 }
 @media screen and (max-width: 480px) {
     .footer-menu__content p {

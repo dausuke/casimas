@@ -57,7 +57,7 @@
             </div>
             <button v-if="userId.sellerid" class="btn btn-dark p-0 sell-btn" type="button"><router-link to="/sell">出品する</router-link></button>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 
@@ -84,6 +84,7 @@ export default {
             },
             userId: this.$store.state.auth,
             url: methods.apiUrl.url,
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: function() {

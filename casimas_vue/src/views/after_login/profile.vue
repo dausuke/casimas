@@ -21,7 +21,7 @@
                 </form>
             </section>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 
@@ -42,6 +42,7 @@ export default {
             data: this.$store.state.auth,
             userData: {},
             token: 'getuser',
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
         created: function() {

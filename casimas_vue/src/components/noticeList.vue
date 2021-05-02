@@ -2,8 +2,9 @@
     <ul class="row m-0 p-0 notice__containar">
         <li v-for="(content, index) in notice" :key="index" class="col-12">
             <div class="col-12 py-3 notice__containar__content">
-                <div v-if="isSeller" class="w-100">
-                    <router-link :to="{ path: 'noticeContent', query: { index: index } }">
+                <div v-if="isSeller" class="w-100 seller-notice-container">
+                    <div v-if="content.check_seller == '0'" class="not-check"></div>
+                    <router-link :to="{ path: 'noticeContent', query: { key: index } }">
                         <div class="w-100">
                             <p class="m-0 text-left">{{ content.item_name }}のレンタル希望が届いています</p>
                             <p class="m-0 pr-3 text-left">{{ content.updated_at }}</p>
@@ -13,8 +14,9 @@
                         </svg>
                     </router-link>
                 </div>
-                <div v-else class="w-100">
-                    <router-link :to="{ path: 'requestStateContent', query: { index: index } }">
+                <div v-else class="w-100 user-notice-container">
+                    <div v-if="content.check_user == '0'" class="not-check"></div>
+                    <router-link :to="{ path: 'requestStateContent', query: { key: index } }">
                         <div v-if="content.request_state == '1'" class="w-100">
                             <p class="m-0 text-left">{{ content.item_name }}のレンタル承認待ちです</p>
                             <p class="m-0 pr-3 text-left">{{ content.updated_at }}</p>
@@ -71,5 +73,22 @@ export default {
 }
 .notice__containar__content p:nth-child(2) {
     color: #2c3e50bd;
+}
+.user-notice-container,
+.seller-notice-container {
+    position: relative;
+}
+.not-check {
+    width: 18px;
+    height: 18px;
+    border: solid 1px rgb(248, 52, 52);
+    border-radius: 50%;
+    background-color: rgb(248, 52, 52);
+    position: absolute;
+    left: -8%;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
 }
 </style>

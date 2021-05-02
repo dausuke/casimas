@@ -23,7 +23,7 @@
                 </div>
             </div>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 <script>
@@ -43,6 +43,7 @@ export default {
             sellingItem: {},
             userId: this.$store.state.auth,
             url: methods.apiUrl.url,
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: async function() {

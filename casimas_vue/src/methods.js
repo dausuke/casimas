@@ -23,8 +23,8 @@ const changeUserPage = (resData, router) => {
 };
 const apiUrl = {
     // url: 'https://casimas.lolipop.io/casimas_php/',
-    url: '../../casimas_php/',
-    // url: 'http://localhost/CASIMAS/casimas_php/',
+    // url: '../../casimas_php/',
+    url: 'http://localhost/CASIMAS/casimas_php/',
 };
 let resposData = {};
 
@@ -95,7 +95,7 @@ const rentalAction = async requestData => {
             rentalData.append('seller_id', requestData.sellerId);
             rentalData.append('plan', requestData.plan);
             rentalData.append('transaction_price', requestData.transactionPlace);
-            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(() => {});
+            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then((res) => { console.log(res)});
             break;
         case 'approval':
             rentalData.append('token', requestData.token);

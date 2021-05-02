@@ -36,7 +36,7 @@
                 </div>
             </div>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 <script>
@@ -55,6 +55,7 @@ export default {
         return {
             data: this.$store.state.auth,
             mypageData: {},
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: function() {

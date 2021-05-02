@@ -28,7 +28,7 @@
                 </div>
             </div>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 <script>
@@ -47,6 +47,7 @@ export default {
         return {
             rentaledItemData: {},
             userId: this.$store.state.auth,
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: async function() {

@@ -2,7 +2,7 @@
     <div>
         <mainHeader></mainHeader>
         <component :is="showRule" @changeContent="changeShowRule"></component>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 <script>
@@ -23,6 +23,7 @@ export default {
         return {
             userId: this.$store.state.auth,
             showRule: 'rentalRule',
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: function() {

@@ -101,7 +101,7 @@
                 </button>
             </div>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 
@@ -123,6 +123,8 @@ export default {
             userid: this.$store.state.auth,
             purchaseJudg: false,
             errorMessage: null,
+            noticeCnt: this.$store.state.notice.noticeCnt,
+
         };
     },
     created: function() {

@@ -122,7 +122,7 @@
                 </footer>
             </b-modal>
         </main>
-        <footerMenu @changePage="changePage"></footerMenu>
+        <footerMenu @changePage="changePage" :noticeCnt="noticeCnt"></footerMenu>
     </div>
 </template>
 
@@ -151,6 +151,7 @@ export default {
             },
             userid: this.$store.state.auth,
             errorMessage: null,
+            noticeCnt: this.$store.state.notice.noticeCnt,
         };
     },
     created: async function() {

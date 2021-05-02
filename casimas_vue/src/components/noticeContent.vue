@@ -55,16 +55,33 @@ export default {
         };
     },
     created: function() {
-        const index = this.$route.query.index;
-        this.rentalRequest = this.$store.state.notice.content[index];
+        const key = this.$route.query.key;
+        this.rentalRequest = this.$store.state.notice.content[key];
+    },
+    mounted: function() {
+        const myHttpClient = this.axios.create({
+            xsrfHeaderName: 'X-CSRF-Token',
+            withCredentials: true,
+        });
+        const requestId = new URLSearchParams();
+        const self = this;
+        requestId.append('token', 'checked_seller');
+        requestId.append('request_id', this.rentalRequest.request_id);
+        requestId.append('seller_id', this.$store.state.auth.sellerid);
+        myHttpClient.post(methods.apiUrl.url + 'notice_action.php', requestId).then(res => {
+            console.log(res);
+            //const cnt = parseInt(res.data.cnt)
+            self.$store.commit('notice/noticeCount', parseInt(res.data.cnt));
+        });
     },
     methods: {
         changePage: function(request) {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
-        approvalRequest:  function() {
-             methods
+        approvalRequest: function() {
+            const self = this;
+            methods
                 .rentalAction({
                     token: 'approval',
                     userId: this.rentalRequest.request_user,
@@ -72,15 +89,15 @@ export default {
                     sellerId: this.rentalRequest.seller_id,
                     plan: this.rentalRequest.request_plan,
                     transactionPlace: this.rentalRequest.request_price,
-                    requestId:this.rentalRequest.request_id,
+                    requestId: this.rentalRequest.request_id,
                 })
                 .then(() => {
                     alert('レンタルを承認しました');
                     self.$router.push({ name: 'Home' });
                 });
-
         },
         rejectRequest: function() {
+            const self = this;
             methods
                 .rentalAction({
                     token: 'reject',

@@ -26,7 +26,7 @@
                     <div class="row w-100 m-0 justify-content-center">
                         <dl class="col-6">
                             <dt class="m-0">状態</dt>
-                            <dd class="m-0">{{stateMessage}}</dd>
+                            <dd class="m-0">{{ stateMessage }}</dd>
                         </dl>
                     </div>
                 </router-link>
@@ -48,13 +48,28 @@ export default {
     data() {
         return {
             rentalRequest: null,
-            stateMessage:''
+            stateMessage: '',
         };
     },
     created: function() {
-        const index = this.$route.query.index;
+        const index = this.$route.query.key;
         this.rentalRequest = this.$store.state.notice.content[index];
-        this.requestState()
+        this.requestState();
+    },
+    mounted: function() {
+        const myHttpClient = this.axios.create({
+            xsrfHeaderName: 'X-CSRF-Token',
+            withCredentials: true,
+        });
+        const requestId = new URLSearchParams();
+        const self = this;
+        requestId.append('token', 'checked_user');
+        requestId.append('request_id', this.rentalRequest.request_id);
+        requestId.append('user_id', this.$store.state.auth.userid);
+        myHttpClient.post(methods.apiUrl.url + 'notice_action.php',requestId).then(res => {
+            console.log(res)
+            self.$store.commit('notice/noticeCount',parseInt(res.data.cnt));
+        });
     },
     methods: {
         changePage: function(request) {
