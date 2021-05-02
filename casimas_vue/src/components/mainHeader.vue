@@ -25,6 +25,7 @@ export default {
         logout: function() {
             if (confirm('ログアウトしますか？')) {
                 this.$store.commit('auth/logout');
+                this.$store.commit('notice/logout');
                 this.$router.push({ name: 'top' });
             }
         },

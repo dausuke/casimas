@@ -11,27 +11,27 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 //DBの設定
-// $db_host = $_ENV['DB_HOST'];
-// $db_name = $_ENV['DB_NAME'];
-// $db_pass = $_ENV['DB_PASS'];
-// $capsule->addConnection([
-//     'driver'    => 'mysql',
-//     'host'      => $db_host,
-//     'database'  => $db_name,
-//     'username'  => $db_name,
-//     'password'  => $db_pass,
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ]);
+$db_host = $_ENV['DB_HOST'];
+$db_name = $_ENV['DB_NAME'];
+$db_pass = $_ENV['DB_PASS'];
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'casimas',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $db_host,
+    'database'  => $db_name,
+    'username'  => $db_name,
+    'password'  => $db_pass,
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ]);
+// $capsule->addConnection([
+//     'driver'    => 'mysql',
+//     'host'      => 'localhost',
+//     'database'  => 'casimas',
+//     'username'  => 'root',
+//     'password'  => '',
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ]);
 
 //関数読み込み
 include("functions.php");
@@ -42,7 +42,7 @@ function deleteItem($item_id)
 {
     $pdo = connect_to_db();
 
-    $sql = 'UPDATE item SET is_deleted=1 WHERE item_id=:item_id';
+    $sql = 'UPDATE item SET is_deleted=1,updated_at=sysdate() WHERE item_id=:item_id';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':item_id', $item_id['item_id'], PDO::PARAM_STR);
@@ -63,7 +63,7 @@ function editItem($item_data)
     // exit();
     $pdo = connect_to_db();
 
-    $sql = 'UPDATE item SET item_name=:item_name,item_introductoin=:item_introductoin,purchase_judg=:purchase_judg WHERE item_id=:item_id';
+    $sql = 'UPDATE item SET item_name=:item_name,item_introductoin=:item_introductoin,purchase_judg=:purchase_judg,updated_at=sysdate() WHERE item_id=:item_id';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':item_id', $item_data['item_id'], PDO::PARAM_STR);
@@ -78,7 +78,7 @@ function editItem($item_data)
         echo json_encode(["error_msg" => "{$error[2]}"]);
         exit();
     } else {
-        $sql = 'UPDATE price SET price_1m=:price_1m,price_1w=:price_1w,price_purchase=:price_purchase WHERE item_id=:item_id';
+        $sql = 'UPDATE price SET price_1m=:price_1m,price_1w=:price_1w,price_purchase=:price_purchase, WHERE item_id=:item_id';
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':item_id', $item_data['item_id'], PDO::PARAM_STR);
         $stmt->bindValue(':price_1m', $item_data['price_1m'], PDO::PARAM_STR);

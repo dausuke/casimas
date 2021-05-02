@@ -74,7 +74,7 @@ export default {
                 })
                 .then(value => {
                     console.log(value);
-                    if (value) {
+                    if (value !='') {
                         this.noticeContent.push(value);
                     }
                     //self.noticeCnt = value.data.length;

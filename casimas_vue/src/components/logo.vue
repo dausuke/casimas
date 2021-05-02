@@ -9,11 +9,14 @@ export default {};
 </script>
 
 <style scoped>
-@font-face {
+/* @font-face {
 font-family: AbhayaLibre;
     src: url('../../Abhaya_Libre/AbhayaLibre-Bold.ttf') format('opentype');
+} */
+@font-face {
+font-family: AbhayaLibre;
+    src: url('../Abhaya_Libre/AbhayaLibre-Bold.ttf') format('opentype');
 }
-
 .logo h1 {
 font-family: AbhayaLibre, serif;
 color: #4F4D4D;

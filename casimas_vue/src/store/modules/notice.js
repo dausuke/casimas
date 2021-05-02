@@ -10,6 +10,9 @@ const mutations = {
     getNotice(state, request) {
         state.content = request
     },
+    logout(state) {
+        Object.assign(state, rentalRequestNotice());
+    },
 };
 
 const notice = {

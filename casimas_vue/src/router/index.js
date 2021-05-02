@@ -14,6 +14,7 @@ import item from '../views/after_login/item';
 import editItem from '../views/after_login/editItem';
 import category from '../views/after_login/category';
 import noticeContent from '../components/noticeContent'
+import requestStateContent from '../components/requestStateContent'
 
 //マイページ内
 import profile from '../views/after_login/profile';
@@ -93,6 +94,12 @@ const routes = [
         path: '/noticeContent',
         name: 'noticeContent',
         component: noticeContent,
+    },
+        {
+        //レンタル希望
+        path: '/requestStateContent',
+        name: 'requestStateContent',
+        component: requestStateContent,
     },
 
     //マイページ内

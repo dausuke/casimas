@@ -23,8 +23,8 @@ const changeUserPage = (resData, router) => {
 };
 const apiUrl = {
     // url: 'https://casimas.lolipop.io/casimas_php/',
-    // url: '../../casimas_php/',
-    url: 'http://localhost/CASIMAS/casimas_php/',
+    url: '../../casimas_php/',
+    // url: 'http://localhost/CASIMAS/casimas_php/',
 };
 let resposData = {};
 
@@ -190,6 +190,7 @@ const checkNotice = async requestData => {
             requestCheckData.append('token', requestData.token);
             requestCheckData.append('seller_id', requestData.sellerid);
             await myHttpClient.post(apiUrl.url + 'notice_action.php', requestCheckData).then(res => {
+                console.log(res);
                 resposData = res.data;
             });
             return resposData;
@@ -197,7 +198,7 @@ const checkNotice = async requestData => {
             requestCheckData.append('token', requestData.token);
             requestCheckData.append('user_id', requestData.userid);
             await myHttpClient.post(apiUrl.url + 'notice_action.php', requestCheckData).then(res => {
-                console.log(res)
+                console.log(res);
                 resposData = res.data;
             });
             return resposData;

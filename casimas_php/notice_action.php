@@ -12,27 +12,27 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 //DBの設定
-// $db_host = $_ENV['DB_HOST'];
-// $db_name = $_ENV['DB_NAME'];
-// $db_pass = $_ENV['DB_PASS'];
-// $capsule->addConnection([
-//     'driver'    => 'mysql',
-//     'host'      => $db_host,
-//     'database'  => $db_name,
-//     'username'  => $db_name,
-//     'password'  => $db_pass,
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ]);
+$db_host = $_ENV['DB_HOST'];
+$db_name = $_ENV['DB_NAME'];
+$db_pass = $_ENV['DB_PASS'];
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'casimas',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $db_host,
+    'database'  => $db_name,
+    'username'  => $db_name,
+    'password'  => $db_pass,
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ]);
+// $capsule->addConnection([
+//     'driver'    => 'mysql',
+//     'host'      => 'localhost',
+//     'database'  => 'casimas',
+//     'username'  => 'root',
+//     'password'  => '',
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ]);
 
 //関数読み込み
 include("functions.php");
@@ -43,7 +43,7 @@ function request_rental_notice($request_data)
 {
     $pdo = connect_to_db();
 
-    $sql='SELECT request_id,request_user,request_item,request_plan,request_price,rental_request.created_at,seller_id,item_name,nickname FROM( (rental_request LEFT OUTER JOIN item ON rental_request.request_item = item.item_id )LEFT OUTER JOIN user_data ON rental_request.request_user = userid) WHERE seller_id=:seller_id AND request_state=1';
+    $sql='SELECT request_id,request_user,request_item,request_plan,request_price,request_state,rental_request.created_at,seller_id,item_name,nickname FROM( (rental_request LEFT OUTER JOIN item ON rental_request.request_item = item.item_id )LEFT OUTER JOIN user_data ON rental_request.request_user = userid) WHERE seller_id=:seller_id AND request_state=1';
 
     $stmt = $pdo->prepare($sql);
 
@@ -62,7 +62,7 @@ function request_rental_notice($request_data)
  function check_request_state($userid)
  {
      $pdo = connect_to_db();
-     $sql='SELECT request_id,request_user,request_item,request_plan,request_price,rental_request.created_at,seller_id,item_name,nickname FROM( (rental_request LEFT OUTER JOIN item ON rental_request.request_item = item.item_id )LEFT OUTER JOIN user_data ON rental_request.request_user = userid) WHERE request_user=:userid';
+     $sql='SELECT request_id,request_user,request_item,request_plan,request_price,request_state,rental_request.updated_at,seller_id,item_name,nickname FROM( (rental_request LEFT OUTER JOIN item ON rental_request.request_item = item.item_id )LEFT OUTER JOIN user_data ON rental_request.request_user = userid) WHERE request_user=:userid';
 
      $stmt = $pdo->prepare($sql);
 
@@ -86,11 +86,4 @@ if (filter_input(INPUT_POST, 'token')) {
     } elseif ($_POST['token']=='user_check') {
         check_request_state($_POST['user_id']);
     }
-    // elseif ($_POST['token']=='update_profile_img') {
-    //     update_profile_img($_POST);
-    // } elseif ($_POST['token']=='get_profile_img') {
-    //     get_profile_img($_POST);
-    // } elseif ($_POST['token']=='update_account') {
-    //     uodate_account($_POST);
-    // }
 }

@@ -12,27 +12,27 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 
 //DBの設定
-// $db_host = $_ENV['DB_HOST'];
-// $db_name = $_ENV['DB_NAME'];
-// $db_pass = $_ENV['DB_PASS'];
-// $capsule->addConnection([
-//     'driver'    => 'mysql',
-//     'host'      => $db_host,
-//     'database'  => $db_name,
-//     'username'  => $db_name,
-//     'password'  => $db_pass,
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ]);
+$db_host = $_ENV['DB_HOST'];
+$db_name = $_ENV['DB_NAME'];
+$db_pass = $_ENV['DB_PASS'];
 $capsule->addConnection([
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'casimas',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $db_host,
+    'database'  => $db_name,
+    'username'  => $db_name,
+    'password'  => $db_pass,
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ]);
+// $capsule->addConnection([
+//     'driver'    => 'mysql',
+//     'host'      => 'localhost',
+//     'database'  => 'casimas',
+//     'username'  => 'root',
+//     'password'  => '',
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ]);
 
 //関数読み込み
 include("functions.php");
@@ -64,7 +64,7 @@ function request_reject($request_id)
 {
     $pdo = connect_to_db();
 
-    $sql = 'UPDATE rental_request SET request_state=0 WHERE request_id=:request_id';
+    $sql = 'UPDATE rental_request SET request_state=0,updated_at=sysdate() WHERE request_id=:request_id';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':request_id', $request_id, PDO::PARAM_STR);
@@ -125,7 +125,7 @@ function rental($rental_data)
             exit('sqlError:' . $error[2]);
         } else {
             $request_id=$rental_data['request_id'];
-            $sql = 'UPDATE rental_request SET request_state=2 WHERE request_id=:request_id';
+            $sql = 'UPDATE rental_request SET request_state=2,updated_at=sysdate() WHERE request_id=:request_id';
 
             $stmt = $pdo->prepare($sql);
             $stmt->bindValue(':request_id', $request_id, PDO::PARAM_STR);

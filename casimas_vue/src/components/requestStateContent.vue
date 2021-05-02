@@ -25,15 +25,11 @@
                     </div>
                     <div class="row w-100 m-0 justify-content-center">
                         <dl class="col-6">
-                            <dt class="m-0">レンタル希望者</dt>
-                            <dd class="m-0">{{ rentalRequest.nickname }}</dd>
+                            <dt class="m-0">状態</dt>
+                            <dd class="m-0">{{stateMessage}}</dd>
                         </dl>
                     </div>
                 </router-link>
-                <div class="row pb-4 flex-column justify-content-center align-items-center btn-area">
-                    <button type="button" class="btn btn-dark col-5 mb-4" @click="approvalRequest">承認する</button>
-                    <button type="button" class="btn btn-outline-dark col-5" @click="rejectRequest">拒否する</button>
-                </div>
             </div>
         </main>
         <footerMenu @changePage="changePage"></footerMenu>
@@ -52,44 +48,31 @@ export default {
     data() {
         return {
             rentalRequest: null,
+            stateMessage:''
         };
     },
     created: function() {
         const index = this.$route.query.index;
         this.rentalRequest = this.$store.state.notice.content[index];
+        this.requestState()
     },
     methods: {
         changePage: function(request) {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
-        approvalRequest:  function() {
-             methods
-                .rentalAction({
-                    token: 'approval',
-                    userId: this.rentalRequest.request_user,
-                    itemId: this.rentalRequest.request_item,
-                    sellerId: this.rentalRequest.seller_id,
-                    plan: this.rentalRequest.request_plan,
-                    transactionPlace: this.rentalRequest.request_price,
-                    requestId:this.rentalRequest.request_id,
-                })
-                .then(() => {
-                    alert('レンタルを承認しました');
-                    self.$router.push({ name: 'Home' });
-                });
-
-        },
-        rejectRequest: function() {
-            methods
-                .rentalAction({
-                    token: 'reject',
-                    id: this.rentalRequest.request_id,
-                })
-                .then(() => {
-                    alert('レンタルを拒否しました');
-                    self.$router.push({ name: 'Home' });
-                });
+        requestState: function() {
+            switch (this.notice[0].request_state) {
+                case '1':
+                    this.state = '承認待ち';
+                    break;
+                case '2':
+                    this.state = '承認済み';
+                    break;
+                case '0':
+                    this.state = '承認されませんでした';
+                    break;
+            }
         },
     },
 };
