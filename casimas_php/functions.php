@@ -2,17 +2,17 @@
 // DB接続の設定
 function connect_to_db()
 {
-    $db_host = $_ENV['DB_HOST'];
-    $db_name = $_ENV['DB_NAME'];
-    $db_pass = $_ENV['DB_PASS'];
-    //$dbn='mysql:dbname='.$db_name.';charset=utf8;port=37206;host='.$db_host;
-    $dbn = 'mysql:host='.$db_host.'; dbname='.$db_name.'; charset=utf8;port=3306; unix_socket=/tmp/mysql.sock';
+    // $db_host = $_ENV['DB_HOST'];
+    // $db_name = $_ENV['DB_NAME'];
+    // $db_pass = $_ENV['DB_PASS'];
+    // //$dbn='mysql:dbname='.$db_name.';charset=utf8;port=37206;host='.$db_host;
+    // $dbn = 'mysql:host='.$db_host.'; dbname='.$db_name.'; charset=utf8;port=3306; unix_socket=/tmp/mysql.sock';
 
-    $user=$db_name;
-    $pwd=$db_pass;
-    // $dbn = 'mysql:dbname=casimas;charset=utf8;port=3306;host=localhost';
-    // $user = 'root';
-    // $pwd = '';
+    // $user=$db_name;
+    // $pwd=$db_pass;
+    $dbn = 'mysql:dbname=casimas;charset=utf8;port=3306;host=localhost';
+    $user = 'root';
+    $pwd = '';
 
     try {
         return new PDO($dbn, $user, $pwd);
@@ -22,17 +22,37 @@ function connect_to_db()
         exit();
     }
 }
-
-//CORSの設定
-function cors_config()
+//BDの設定（sentinel用)
+function connect_to_db_sentinel()
 {
-    header('Access-Control-Allow-Origin: http://192.168.10.113:8080');
-    header('Access-Control-Allow-Headers: Origin, X-Requested-With, X-CSRF-Token, Content-Type, Accept');
-    header('Access-Control-Allow-Credentials: true');
+    $db_host = $_ENV['DB_HOST'];
+    $db_name = $_ENV['DB_NAME'];
+    $db_pass = $_ENV['DB_PASS'];
+
+//     $add_connection=[
+//     'driver'    => 'mysql',
+//     'host'      => $db_host,
+//     'database'  => $db_name,
+//     'username'  => $db_name,
+//     'password'  => $db_pass,
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ];
+    $add_connection=[
+    'driver'    => 'mysql',
+    'host'      => 'localhost',
+    'database'  => 'casimas',
+    'username'  => 'root',
+    'password'  => '',
+    'charset'   => 'utf8',
+    'collation' => 'utf8_unicode_ci',
+];
+return $add_connection;
 }
 
 //ランダム文字列の生成
-function random_string($length) {
-$randam_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  return substr(str_shuffle($randam_chars), 0, $length);
+function random_string($length)
+{
+    $randam_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    return substr(str_shuffle($randam_chars), 0, $length);
 }

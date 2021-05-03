@@ -14,30 +14,10 @@ $dotenv->load();
 
 //関数読み込み
 include("functions.php");
-//cors_config();
-
  //DBの設定(認証用)
-$db_host = $_ENV['DB_HOST'];
-$db_name = $_ENV['DB_NAME'];
-$db_pass = $_ENV['DB_PASS'];
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => $db_host,
-    'database'  => $db_name,
-    'username'  => $db_name,
-    'password'  => $db_pass,
-    'charset'   => 'utf8',
-    'collation' => 'utf8_unicode_ci',
-]);
-//  $capsule->addConnection([
-//     'driver'    => 'mysql',
-//     'host'      => 'localhost',
-//     'database'  => 'casimas',
-//     'username'  => 'root',
-//     'password'  => '',
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ]);
+$add_connection = connect_to_db_sentinel();
+$capsule->addConnection($add_connection);
+//  $capsule->addConnection();
 
 $capsule->bootEloquent();
 
