@@ -6,15 +6,9 @@
                 <h2 class="pt-3">全てのカテゴリー</h2>
                 <div class="row w-100 m-0">
                     <div class="item-area w-100 m-0 p-0">
-                        <ul class=" row d-flex justify-content-around m-0 p-0 w-100">
-                            <li class="col-3 m-1 p-0" v-for="(content, index) in allItem" :key="index">
-                                <div class=" col-12 p-0 item-area__content" @click="itemPage(content.item_id)">
-                                    <div class="item-img">
-                                        <img :src="url + content.photo1" class="item" />
-                                        <rentaled v-show="content.rental_state_id"></rentaled>
-                                    </div>
-                                    <p class="m-0 p-0">{{ content.item_name }}</p>
-                                </div>
+                        <ul class="row justify-content-around m-0 p-0 w-100">
+                            <li class="col-5 m-1 p-0" v-for="(content, index) in allItem" :key="index">
+                                <itemImg :itemContents="content" @itemPage="itemPage"></itemImg>
                             </li>
                         </ul>
                     </div>
@@ -29,13 +23,13 @@
 import mainHeader from '../../components/mainHeader';
 import footerMenu from '../../components/footerMenu';
 import methods from '../../methods';
-import rentaled from '../../components/rentaled';
+import itemImg from '../../components/home_ItemImg';
 
 export default {
     components: {
         mainHeader,
         footerMenu,
-        rentaled,
+        itemImg,
     },
     data() {
         return {
@@ -157,15 +151,5 @@ export default {
 }
 .item-area ul li {
     list-style: none;
-}
-.item-img {
-    height: 87px;
-    width: 87px;
-    position: relative;
-}
-.item-img .item {
-    height: 87px;
-    width: 87px;
-    object-fit: cover;
 }
 </style>

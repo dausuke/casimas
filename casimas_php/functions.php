@@ -29,24 +29,24 @@ function connect_to_db_sentinel()
     $db_name = $_ENV['DB_NAME'];
     $db_pass = $_ENV['DB_PASS'];
 
-//     $add_connection=[
-//     'driver'    => 'mysql',
-//     'host'      => $db_host,
-//     'database'  => $db_name,
-//     'username'  => $db_name,
-//     'password'  => $db_pass,
-//     'charset'   => 'utf8',
-//     'collation' => 'utf8_unicode_ci',
-// ];
     $add_connection=[
     'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'casimas',
-    'username'  => 'root',
-    'password'  => '',
+    'host'      => $db_host,
+    'database'  => $db_name,
+    'username'  => $db_name,
+    'password'  => $db_pass,
     'charset'   => 'utf8',
     'collation' => 'utf8_unicode_ci',
 ];
+//     $add_connection=[
+//     'driver'    => 'mysql',
+//     'host'      => 'localhost',
+//     'database'  => 'casimas',
+//     'username'  => 'root',
+//     'password'  => '',
+//     'charset'   => 'utf8',
+//     'collation' => 'utf8_unicode_ci',
+// ];
 return $add_connection;
 }
 

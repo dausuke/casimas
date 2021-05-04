@@ -22,9 +22,9 @@ const changeUserPage = (resData, router) => {
     }
 };
 const apiUrl = {
-    // url: 'https://casimas.lolipop.io/casimas_php/',
+    url: 'https://casimas.lolipop.io/casimas_php/',
     // url: '../../casimas_php/',
-    url: 'http://localhost/CASIMAS/casimas_php/',
+    // url: 'http://localhost/CASIMAS/casimas_php/',
 };
 let resposData = {};
 

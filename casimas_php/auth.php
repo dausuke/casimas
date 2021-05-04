@@ -101,7 +101,7 @@ function register($user_data)
     if ($user_data['isSeller']==='true') {
 
         //ユーザーID取得
-        $seller_id = $pdo->lastInsertId();
+        $seller_id = $user['id'];
         // var_dump($seller_id);
         // exit();
 
