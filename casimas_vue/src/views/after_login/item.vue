@@ -5,28 +5,7 @@
             <div class="row area m-0 w-100 justify-content-center">
                 <div class="col-12 itemimg-area">
                     <!-- <itemPhoto :itemData="itemData"></itemPhoto> -->
-                    <ul class="d-flex justify-content-center p-0 m-0">
-                        <li>
-                            <div class="item-img">
-                                <div class="img-content" id="imgContent1" :data-url="itemData.photo1"></div>
-                            </div>
-                        </li>
-                        <li v-show="itemData.photo2">
-                            <div class="item-img">
-                                <div class="img-content" id="imgContent2" :data-url="itemData.photo2"></div>
-                            </div>
-                        </li>
-                        <li v-show="itemData.photo3">
-                            <div class="item-img">
-                                <div class="img-content" id="imgContent3" :data-url="itemData.photo3"></div>
-                            </div>
-                        </li>
-                        <li v-show="itemData.photo4">
-                            <div class="item-img">
-                                <div class="img-content" id="imgContent4" :data-url="itemData.photo4"></div>
-                            </div>
-                        </li>
-                    </ul>
+                    <itemPhoto :photo="this.itemData.photo"></itemPhoto>
                 </div>
             </div>
             <div class="row area m-0 mt-3 px-3 px-lg-5 w-100 justify-content-center">
@@ -76,7 +55,7 @@
                 </dl>
             </div>
             <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!type && !itemData.rental_state_id">
-                <p v-if="requestState=='1'">出品者のレンタル希望承認を待っています</p>
+                <p v-if="requestState == '1'">出品者のレンタル希望承認を待っています</p>
                 <button v-else-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center1>
                     レンタル希望を送る
                 </button>
@@ -130,14 +109,14 @@
 <script>
 import mainHeaderBack from '../../components/mainHeaderBack';
 import footerMenu from '../../components/footerMenu';
-//import itemPhoto from '../../components/itemphoto'
+import itemPhoto from '../../components/ditail_ItemPhoto';
 import methods from '../../methods';
 
 export default {
     components: {
         mainHeaderBack,
         footerMenu,
-        // itemPhoto
+        itemPhoto,
     },
     data() {
         return {
@@ -175,7 +154,6 @@ export default {
                 console.log(value);
                 self.sellerHeight = value;
             });
-        await this.getPhoto();
         this.checkRrequestState();
     },
     methods: {
@@ -183,12 +161,7 @@ export default {
             const router = this.$router;
             methods.changeUserPage(request, router);
         },
-        getPhoto: function() {
-            for (let i = 1; i <= 4; i++) {
-                const imgUrl = this.url + document.getElementById('imgContent' + i).dataset.url;
-                document.getElementById('imgContent' + i).style.backgroundImage = 'url(' + imgUrl + ')';
-            }
-        },
+
         modalClose1: function() {
             this.$bvModal.hide('modal-center1');
         },
@@ -268,18 +241,6 @@ export default {
 </script>
 
 <style scoped>
-.itemimg-area ul li {
-    list-style: none;
-    margin: 1rem;
-}
-.img-content {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 80px;
-    width: 80px;
-    margin: 5px;
-}
 .item-state dt {
     width: 96px;
     padding: 12px;

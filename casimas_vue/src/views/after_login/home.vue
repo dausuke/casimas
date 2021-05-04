@@ -7,7 +7,7 @@
                 <div class="row w-100 m-0">
                     <div class="item-area w-100 m-0 p-0">
                         <ul class="row justify-content-around m-0 p-0 w-100">
-                            <li class="col-5 m-1 p-0" v-for="(content, index) in allItem" :key="index">
+                            <li class="col-3 m-2 p-0" v-for="(content, index) in allItem" :key="index">
                                 <itemImg :itemContents="content" @itemPage="itemPage"></itemImg>
                             </li>
                         </ul>

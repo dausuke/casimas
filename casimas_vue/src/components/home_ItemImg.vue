@@ -4,7 +4,7 @@
             <img :src="url + itemContents.photo1" class="item m-0" />
             <rentaled v-show="itemContents.rental_state_id"></rentaled>
         </div>
-        <p class="m-0 p-0">{{ itemContents.item_name }}</p>
+        <p class="m-0 p-0 font-weight-bold">{{ itemContents.item_name }}</p>
     </div>
 </template>
 
@@ -32,15 +32,17 @@ export default {
 <style scoped>
 .item-area__content{
     background-color:rgb(247, 247, 248) ;
+    border-radius: 10%;
 }
 .item-img {
-    height: 150px;
-    width: 150px;
+    height: 110px;
+    width: 100px;
+    padding-top: 10px;
     position: relative;
 }
 .item-img .item {
-    height: 150px;
-    max-width: 150px;
+    height: 100px;
+    max-width: 100px;
     /* width: auto; */
     object-fit: cover;
     /* background-position: center center;
