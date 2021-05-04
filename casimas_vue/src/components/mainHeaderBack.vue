@@ -31,6 +31,7 @@ export default {
     methods: {
         logout: function() {
             if (confirm('ログアウトしますか？')) {
+                localStorage.removeItem('vuex');
                 this.$store.commit('auth/logout');
                 this.$store.commit('notice/logout');
                 this.$router.push({ name: 'top' });

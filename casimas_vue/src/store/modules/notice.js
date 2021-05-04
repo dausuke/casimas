@@ -14,9 +14,9 @@ const mutations = {
     noticeCount(state,cnt) {
         state.noticeCnt=cnt
     },
-    // logout(state) {
-    //     Object.assign(state, rentalRequestNotice());
-    // },
+    logout(state) {
+        Object.assign(state, rentalRequestNotice());
+    },
     // checkedNotice(state) {
     //     state.noticeCnt--;
     // },

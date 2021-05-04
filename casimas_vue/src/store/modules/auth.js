@@ -10,6 +10,7 @@ const state = userState();
 
 const mutations = {
     login(state, userData) {
+        Object.assign(state, userState());
         state.userid = userData.userid;
         state.isLogged = true;
         if (userData.seller_id != null) {
