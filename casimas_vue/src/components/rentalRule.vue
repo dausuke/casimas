@@ -182,7 +182,7 @@
                 </span>
             </div>
         </div>
-        <p class="show-rule m-0 py-3" @click="change('sellingRule','rentalRule')" v-if="this.$store.state.auth.sellerid">出品ルールをみる</p>
+        <p class="show-rule m-0 py-3" @click="change('sellingRule')" v-if="this.$store.state.auth.sellerid">出品ルールをみる</p>
     </main>
 </template>
 
@@ -190,7 +190,7 @@
 export default {
      methods: {
         change: function(showContent) {
-            this.$emit('change',showContent);
+            this.$emit('changeContent',showContent);
         },
     },
 };

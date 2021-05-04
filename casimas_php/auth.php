@@ -70,16 +70,18 @@ function register($user_data)
     'password' => $user_data['pass'],
     ];
     //新規登録実行
-    Sentinel::registerAndActivate($registeruser);   //認証用
+    $user = Sentinel::registerAndActivate($registeruser);   //認証用
 
+    $id = $user['id'];
     $pdo = connect_to_db();
 
     //ユーザー情報
-    $sql = 'INSERT INTO user_data(userid,gender,address,phone,birthday,nickname,introduction,created_at,updated_at,is_deleted) VALUES (null,:gender,:address,:phone,:birthday,:nickname,:introduction,sysdate(),sysdate(),0)';
+    $sql = 'INSERT INTO user_data(userid,gender,address,phone,birthday,nickname,introduction,created_at,updated_at,is_deleted) VALUES (:id,:gender,:address,:phone,:birthday,:nickname,:introduction,sysdate(),sysdate(),0)';
 
     $stmt = $pdo->prepare($sql);
 
     //バインド変数設定
+    $stmt->bindValue(':id', $id, PDO::PARAM_STR);
     $stmt->bindValue(':gender', $user_data['gender'], PDO::PARAM_STR);
     $stmt->bindValue(':address', $user_data['address'], PDO::PARAM_STR);
     $stmt->bindValue(':phone', $user_data['phone'], PDO::PARAM_STR);
@@ -145,7 +147,7 @@ if (filter_input(INPUT_POST, 'token')) {
     } elseif ($_POST['token']=='register') {
         register($_POST);
     //ログアウト
-    }elseif ($_POST['token']=='logout') {
+    } elseif ($_POST['token']=='logout') {
         logout($_POST);
     };
 }
