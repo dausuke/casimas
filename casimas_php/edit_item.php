@@ -44,12 +44,13 @@ function editItem($item_data)
     // exit();
     $pdo = connect_to_db();
 
-    $sql = 'UPDATE item SET item_name=:item_name,item_introductoin=:item_introductoin,purchase_judg=:purchase_judg,updated_at=sysdate() WHERE item_id=:item_id';
+    $sql = 'UPDATE item SET item_name=:item_name,item_introductoin=:item_introductoin,purchase_judg=:purchase_judg,brand=:brand,updated_at=sysdate() WHERE item_id=:item_id';
 
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':item_id', $item_data['item_id'], PDO::PARAM_STR);
     $stmt->bindValue(':item_name', $item_data['item_name'], PDO::PARAM_STR);
     $stmt->bindValue(':item_introductoin', $item_data['item_introductoin'], PDO::PARAM_STR);
+    $stmt->bindValue(':brand', $item_data['brand'], PDO::PARAM_STR);
     $stmt->bindValue(':purchase_judg', $item_data['purchase_judg'], PDO::PARAM_STR);
     $status = $stmt->execute();
     // データ登録処理後

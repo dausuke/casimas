@@ -53,7 +53,6 @@ export default {
             document.getElementById('swipeArea').style.transform = `translate3d(${this.moveX + this.position}px,0,0)`;
         },
         touchEnd() {
-            console.log(this.elapsedTime);
             if (this.moveX > 10 && this.id !== 1) {
                 this.position = this.position + this.width;
                 const swipeArea = document.getElementById('swipeArea');

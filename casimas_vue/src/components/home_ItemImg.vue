@@ -1,10 +1,16 @@
 <template>
-    <div class=" col-12 p-0 d-flex justify-content-center align-items-center flex-column item-area__content" @click="itemPage(itemContents.item_id)">
-        <div class="m-0 item-img">
+    <div class=" col-12 my-2 p-0 d-flex justify-content-center align-items-center item-area__content" @click="itemPage(itemContents.item_id)">
+        <div class="m-0 p-3 w-50 item-area__content__img">
             <img :src="url + itemContents.photo1" class="item m-0" />
             <rentaled v-show="itemContents.rental_state_id"></rentaled>
         </div>
-        <p class="m-0 p-0 font-weight-bold">{{ itemContents.item_name }}</p>
+        <div class="w-50 pl-3 item-area__content__introduction">
+            <p class="m-0 p-0 font-weight-bold text-left">{{ itemContents.item_name }}</p>
+            <p class="m-0 p-0 font-weight-bold text-left item-price">７日間￥{{ itemContents.price_1w }}</p>
+            <p class="m-0 p-0 font-weight-bold text-left item-price">３０日間￥{{ itemContents.price_1m }}</p>
+            <p class="m-0 p-0 text-left">{{ itemContents.brand }}</p>
+            <p class="m-0 p-0 text-left">{{ itemContents.category_content }}</p>
+        </div>
     </div>
 </template>
 
@@ -30,17 +36,17 @@ export default {
 </script>
 
 <style scoped>
-.item-area__content{
-    background-color:rgb(247, 247, 248) ;
+/* .item-area__content{
+
+} */
+.item-area__content__img {
+    background-color: rgb(247, 247, 248);
     border-radius: 10%;
-}
-.item-img {
-    height: 110px;
+    height: 90%;
     width: 100px;
-    padding-top: 10px;
     position: relative;
 }
-.item-img .item {
+.item-area__content__img .item {
     height: 100px;
     max-width: 100px;
     /* width: auto; */
@@ -48,5 +54,8 @@ export default {
     /* background-position: center center;
     background-repeat: no-repeat;
     background-size: contain; */
+}
+.item-price {
+    color: red;
 }
 </style>

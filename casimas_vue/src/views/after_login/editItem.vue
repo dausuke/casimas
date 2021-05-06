@@ -124,7 +124,6 @@ export default {
             purchaseJudg: false,
             errorMessage: null,
             noticeCnt: this.$store.state.notice.noticeCnt,
-
         };
     },
     created: function() {
@@ -159,6 +158,7 @@ export default {
                 .then(self.$router.push({ name: 'Home' }));
         },
         editItem: function() {
+            const self = this;
             methods
                 .sellerAction({
                     token: 'edit',
@@ -169,6 +169,7 @@ export default {
                     price1w: this.itemData.price_1w,
                     pricePurchase: this.itemData.price_purchase,
                     purchaseJudg: this.purchaseJudg,
+                    brand:this.itemData.brand
                 })
                 .then(() => {
                     alert('商品を編集しました');

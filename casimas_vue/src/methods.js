@@ -22,9 +22,9 @@ const changeUserPage = (resData, router) => {
     }
 };
 const apiUrl = {
-    url: 'https://casimas.lolipop.io/casimas_php/',
+    // url: 'https://casimas.lolipop.io/casimas_php/',
     // url: '../../casimas_php/',
-    // url: 'http://localhost/CASIMAS/casimas_php/',
+    url: 'http://localhost/CASIMAS/casimas_php/',
 };
 let resposData = {};
 
@@ -95,7 +95,9 @@ const rentalAction = async requestData => {
             rentalData.append('seller_id', requestData.sellerId);
             rentalData.append('plan', requestData.plan);
             rentalData.append('transaction_price', requestData.transactionPlace);
-            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then((res) => { console.log(res)});
+            await myHttpClient.post(apiUrl.url + 'rental.php', rentalData).then(res => {
+                console.log(res);
+            });
             break;
         case 'approval':
             rentalData.append('token', requestData.token);
@@ -138,8 +140,11 @@ const sellerAction = async requestData => {
             itemData.append('price_1w', requestData.price1w);
             itemData.append('price_purchase', requestData.pricePurchase);
             itemData.append('purchase_judg', requestData.purchaseJudg);
+            itemData.append('brand', requestData.brand);
             itemData.append('token', requestData.token);
-            myHttpClient.post(apiUrl.url + 'edit_item.php', itemData).then(() => {});
+            myHttpClient.post(apiUrl.url + 'edit_item.php', itemData).then(res => {
+                console.log(res);
+            });
             break;
         case 'delete':
             itemData.append('item_id', requestData.itemId);
@@ -204,4 +209,5 @@ const checkNotice = async requestData => {
             return resposData;
     }
 };
+
 export default { changeUserPage, apiUrl, getItem, getSeller, rentalAction, checkNotice, sellerAction, mypageAction };
