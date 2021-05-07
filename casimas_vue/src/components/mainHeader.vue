@@ -3,13 +3,10 @@
         <div class="container-fluid heder-content">
             <header class="row w-100 m-0 align-items-center justify-content-center">
                 <div class="row w-100">
-                    <logo class="col-5"></logo>
+                    <logo class="col-5 p-0"></logo>
                     <div class="d-flex align-items-center justify-content-end col-7">
                         <p class="m-0" @click="logout">ログアウト</p>
                     </div>
-                </div>
-                <div class="row w-100">
-                    <router-link to="/category" class="my-lg-3 my-1 ml-3">カテゴリーから探す</router-link>
                 </div>
             </header>
         </div>
@@ -41,11 +38,5 @@ export default {
 .header-area {
     margin: 0 auto;
 }
-a {
-    color: black;
-}
-a:hover {
-    color: black;
-    text-decoration: none;
-}
+
 </style>

@@ -8,8 +8,8 @@
         <div class="row w-100 m-0">
             <p class="w-100 text-center">おすすめアイテム</p>
             <div class="item-area w-100 m-0 p-0">
-                <ul class=" row d-flex justify-content-around m-0 p-0 w-100">
-                    <li class="col-3 m-1 p-0" v-for="(content, index) in allItem" :key="index">
+                <ul class="row m-0 p-0 w-100">
+                    <li class="col-12" v-for="(content, index) in allItem" :key="index">
                         <itemImg :itemContents="content"></itemImg>
                     </li>
                 </ul>

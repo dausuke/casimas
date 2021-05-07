@@ -3,19 +3,23 @@
         <mainHeaderBack></mainHeaderBack>
         <main class="container-fulid user-content">
             <div class="row area m-0 w-100 justify-content-center">
-                <div class="col-12 itemimg-area">
+                <div class="col-12 pt-3 itemimg-area">
                     <!-- <itemPhoto :itemData="itemData"></itemPhoto> -->
                     <itemPhoto :photo="this.itemData.photo"></itemPhoto>
                 </div>
+                <p class="m-0 mt-3 mb-2 font-weight-bold item-name">{{ itemData.item_name }}</p>
+            </div>
+            <div class="row area m-0 mt-3 w-100 justify-content-center flex-column">
+                <p class="font-weight-bold">商品説明</p>
+                <div class="item-introduction">{{ itemData.item_introductoin }}</div>
             </div>
             <div class="row area m-0 mt-3 px-3 px-lg-5 w-100 justify-content-center">
                 <div class="row w-100 justify-content-center item-name">
-                    <span class="d-flex">
+                    <span>
                         <p class="mr-3 font-weight-bold" v-show="itemData.rental_state_id">【レンタル中】</p>
-                        <p class="font-weight-bold">{{ itemData.item_name }}</p>
                     </span>
                 </div>
-                <div class="row w-100 flex-column rental-price">
+                <!-- <div class="row w-100 flex-column rental-price">
                     <p class="text-left">7日間レンタル：¥{{ itemData.price_1w }}</p>
                     <p class="text-left">30日間レンタル：¥{{ itemData.price_1m }}</p>
                 </div>
@@ -28,8 +32,8 @@
                         <div class="d-flex" v-if="itemData.purchase_judg == 'false'">
                             <p>購入：不可</p>
                         </div>
-                    </div>
-                    <div class="pr-3 pb-2 favorite">
+                    </div> -->
+                    <!-- <div class="pr-3 pb-2 favorite">
                         <svg width="30" height="30" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
                                 d="M31.2601 6.91499C30.4939 6.1485 29.5843 5.54046 28.5831 5.12562C27.5819 4.71077 26.5088 4.49725 25.4251 4.49725C24.3413 4.49725 23.2682 4.71077 22.267 5.12562C21.2658 5.54046 20.3562 6.1485 19.5901 6.91499L18.0001 8.50499L16.4101 6.91499C14.8625 5.36745 12.7636 4.49806 10.5751 4.49806C8.38651 4.49806 6.28759 5.36745 4.74006 6.91499C3.19252 8.46253 2.32312 10.5614 2.32312 12.75C2.32312 14.9385 3.19252 17.0375 4.74006 18.585L6.33006 20.175L18.0001 31.845L29.6701 20.175L31.2601 18.585C32.0266 17.8189 32.6346 16.9092 33.0494 15.908C33.4643 14.9068 33.6778 13.8337 33.6778 12.75C33.6778 11.6663 33.4643 10.5931 33.0494 9.59196C32.6346 8.59077 32.0266 7.68113 31.2601 6.91499V6.91499Z"
@@ -39,24 +43,41 @@
                                 stroke-linejoin="round"
                             />
                         </svg>
-                    </div>
+                    </div> -->
+                <!-- </div> -->
+                <div class="row area m-0 w-100 justify-content-center">
+                    <dl class="d-flex flex-wrap col-12 p-0 m-0 item-state">
+                        <dt class="col-6 py-3 p-0 text-center">７日間レンタル</dt>
+                        <dd class="col-6 pl-3 p-0">¥{{ itemData.price_1w }}</dd>
+                        <dt class="col-6 py-3 p-0 text-center">３０日間レンタル</dt>
+                        <dd class="col-6 pl-3 p-0 ">¥{{ itemData.price_1m }}</dd>
+                        <div class="w-100 d-flex" v-if="itemData.purchase_judg == 'true'">
+                            <dt class="w-50 py-3 p-0">
+                                <p class="m-0">購入可能</p>
+                                <p class="m-0">購入価格</p>
+                            </dt>
+                            <dd class="w-50 pl-3 p-0">¥{{ itemData.price_purchase }}</dd>
+                        </div>
+                        <div class="w-100 d-flex" v-if="itemData.purchase_judg == 'false'">
+                            <dt class="w-50 py-3 p-0">
+                                <p class="m-0">購入不可</p>
+                            </dt>
+                            <dd class="w-50 pl-3 p-0">ーーーー</dd>
+                        </div>
+                    </dl>
                 </div>
-            </div>
-            <div class="row area m-0 mt-3 w-100 justify-content-center flex-column">
-                <p class="font-weight-bold">商品説明</p>
-                <div class="item-introduction">{{ itemData.item_introductoin }}</div>
             </div>
             <div class="row area m-0 mt-3 w-100 justify-content-center">
                 <dl class="d-flex flex-wrap col-12 p-0 m-0 item-state">
-                    <dt>ブランド</dt>
-                    <dd class="p-0 col-6">{{ itemData.brand }}</dd>
-                    <dt>出品者の身長</dt>
-                    <dd class="p-0 col-6">{{ sellerHeight.height }}cm</dd>
+                    <dt class="col-3 py-3 p-0 text-center">ブランド</dt>
+                    <dd class="col-9 pl-3 p-0">{{ itemData.brand }}</dd>
+                    <dt class="col-3 py-3 p-0 text-center">出品者の身長</dt>
+                    <dd class="col-9 pl-3 p-0 ">{{ sellerHeight.height }}cm</dd>
                 </dl>
             </div>
             <div class="row mt-3 m-0 w-100 justify-content-center" id="btn_area" v-if="!type && !itemData.rental_state_id">
                 <p v-if="requestState == '1'">出品者のレンタル希望承認を待っています</p>
-                <button v-else-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark" id="rentalBtn" v-b-modal.modal-center1>
+                <button v-else-if="itemData.seller_id != userid.sellerid" type="button" class="btn btn-dark col-6" id="rentalBtn" v-b-modal.modal-center1>
                     レンタル希望を送る
                 </button>
                 <button v-else type="button" class="btn btn-dark" @click="editItem">編集する</button>
@@ -241,20 +262,20 @@ export default {
 </script>
 
 <style scoped>
+.item-name {
+    font-size: 16px;
+}
 .item-state dt {
-    width: 96px;
     padding: 12px;
     background-color: rgba(243, 243, 243, 0.349);
     border-top: 1px solid #eee;
 }
 .item-state dd {
-    width: 282px;
     overflow-wrap: break-word;
     border-top: 1px solid #eee;
     padding: 0 0 0 1rem;
     margin: 0;
 }
-.item-state dt,
 .item-state dd {
     display: flex;
     justify-content: left;
@@ -263,6 +284,11 @@ export default {
 .item-state :nth-child(5),
 .item-state :nth-child(6) {
     border-bottom: 1px solid #eee;
+}
+#rentalBtn{
+    height: 45px;
+    font-weight: bold;
+    font-size: 14px;
 }
 .modal-body__select_plan {
     margin: 0 auto !important;

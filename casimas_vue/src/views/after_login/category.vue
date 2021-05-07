@@ -6,21 +6,13 @@
                 v-for="(filterItem, index) in categoryFilItem"
                 :key="index"
                 class="row flex-nowrap flex-column w-100 m-0 mt-3 py-3 category area swipe-content"
-                id="hiefht150"
             >
-                <p class="text-left font-weight-bold">{{index}}</p>
-                <ul class="d-flex m-0 p-0 w-100 category__contents" id="swipeArea">
-                    <li
-                        class="col-12"
-                        v-for="(content, index) in filterItem"
-                        :key="index"
-                        @touchstart="touchStart"
-                        @touchmove="touchMove"
-                        @touchend="touchEnd(filterItem.length)"
-                    >
+                <p class="text-left font-weight-bold">{{ index }}</p>
+                <div class="d-flex m-0 p-0 w-100 category__contents" v-for="(content, index) in filterItem" :key="index" :id="'swipeArea' + index">
+                    <div class="col-12" @touchstart="touchStart(index)" @touchmove="touchMove(index)" @touchend="touchEnd(filterItem.length, index)">
                         <itemImg :itemContents="content"></itemImg>
-                    </li>
-                </ul>
+                    </div>
+                </div>
             </div>
             <!-- <div class="row flex-nowrap flex-column w-100 m-0 mt-3 py-3 category area" id="heifht160">
                 <p class="text-left font-weight-bold">[出品者身長]160cm~169cm</p>
@@ -124,20 +116,20 @@ export default {
                 }
             });
         },
-        touchStart(e) {
-            this.width = document.getElementById('swipeArea').offsetWidth;
+        touchStart(e, key) {
+            this.width = document.getElementById('swipeArea' + key).offsetWidth;
             this.startX = e.touches[0].pageX;
         },
-        touchMove(e) {
+        touchMove(e, key) {
             this.moveX = e.touches[0].pageX - this.startX;
-            document.getElementById('swipeArea').style.transitionDuration = '0ms';
-            document.getElementById('swipeArea').style.transform = `translate3d(${this.moveX + this.position}px,0,0)`;
+            document.getElementById('swipeArea' + key).style.transitionDuration = '0ms';
+            document.getElementById('swipeArea' + key).style.transform = `translate3d(${this.moveX + this.position}px,0,0)`;
         },
-        touchEnd(length) {
+        touchEnd(length, key) {
             if (this.moveX > 10 && this.id !== 1) {
-                const swipeArea = document.getElementById('swipeArea');
+                const swipeArea = document.getElementById('swipeArea' + key);
                 this.position = this.position + this.width;
-                document.getElementById('swipeArea').style.transitionDuration = '300ms';
+                document.getElementById('swipeArea' + key).style.transitionDuration = '300ms';
                 swipeArea.style.transform = `translate3d(${this.position}px,0,0)`;
                 console.log('右スワイプ');
                 this.id--;

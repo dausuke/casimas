@@ -1,13 +1,26 @@
 <template>
     <div>
         <mainHeader></mainHeader>
-        <main class="container-fulid user-content area">
-            <div class="user-content__home">
+        <main class="container-fulid ">
+            <div class="row w-100 mt-3 py-3 m-0 justify-content-center area">
+                <div class="col-11 d-flex justify-content-between">
+                    <router-link to="/category" class="my-lg-3 ml-3">
+                        <button type="button" class="btn btn-outline-secondary link-btn">カテゴリー</button>
+                    </router-link>
+                    <router-link to="/purchase" class="my-lg-3 ml-3">
+                        <button type="button" class="btn btn-outline-secondary link-btn">コーディネート</button>
+                    </router-link>
+                    <router-link to="/purchase" class="my-lg-3 ml-3">
+                        <button type="button" class="btn btn-outline-secondary link-btn">購入可能</button>
+                    </router-link>
+                </div>
+            </div>
+            <div class="user-content__home area user-content ">
                 <h2 class="pt-3">全てのカテゴリー</h2>
                 <div class="row w-100 m-0">
                     <div class="item-area w-100 m-0 p-0">
                         <ul class="row m-0 p-0 w-100">
-                            <li class="col-12" v-for="(content, index) in allItem" :key="index">
+                            <li class="col-12 mb-3" v-for="(content, index) in allItem" :key="index">
                                 <itemImg :itemContents="content" @itemPage="itemPage"></itemImg>
                             </li>
                         </ul>
@@ -100,7 +113,6 @@ export default {
                     if (value != '') {
                         this.noticeContent.push(value);
                     }
-                    //self.noticeCnt = value.data.length;
                 });
             await this.checkRentalRequestSeller();
         },
@@ -120,19 +132,21 @@ export default {
             }
         },
     },
-    // watch: {
-    //     noticeContent: {
-    //         deep: true,
-    //         handler:async function() {
-    //            await this.$store.commit('notice/noticeContent')
-    //             this.noticeCnt = this.$store.state.notice.noticeCnt
-    //             //this.noticeContent[0].length;
-    //         }
-    //     }
-    // }
 };
 </script>
 <style scoped>
+a {
+    color: black;
+}
+a:hover {
+    color: black;
+    text-decoration: none;
+}
+.link-btn {
+    color: black;
+    text-decoration: none;
+    border-radius: 1.25rem;
+}
 .sell-btn {
     height: 70px;
     width: 70px;

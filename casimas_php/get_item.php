@@ -40,6 +40,24 @@ function get_all_item()
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }
+function get_purchase_item(){
+     $pdo = connect_to_db();
+
+    //商品情報
+    $sql = "SELECT item.item_id,rental_state.rental_state_id,seller_id,item_name,item_introductoin,brand, price_1m,price_1w,price_purchase,category_content,photo1,photo2,photo3,photo4 FROM ((((item LEFT OUTER JOIN price ON item.item_id = price.item_id) LEFT OUTER JOIN category ON item.category_id = category.category_id ) LEFT OUTER JOIN photo ON item.item_id = photo.item_id) LEFT OUTER JOIN rental_state ON item.item_id = rental_state.item_id) WHERE item.is_deleted=0 AND item.purchase_judg='true'";
+    $stmt = $pdo->prepare($sql);
+    $status = $stmt->execute();
+
+    if ($status == false) {
+        $error = $stmt->errorInfo();
+        // データ登録失敗次にエラーを表示
+        exit('sqlError:' . $error[2]);
+    } else {
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    }
+};
+
 function get_selling_item($seller_id)
 {
     $pdo = connect_to_db();
@@ -145,5 +163,7 @@ function is_rentaled($user_id)
             get_all_item();
         } elseif ($_POST['token']=='rentaled') {
             is_rentaled($_POST['user_id']);
+        }elseif ($_POST['token']=='purchase') {
+            get_purchase_item();
         }
     }
