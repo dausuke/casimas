@@ -42,13 +42,15 @@ export default {
     },
     created: async function() {
         const self = this;
-        await methods
-            .getItem({
-                token: 'all_item',
-            })
-            .then(value => {
-                self.allItem = value;
-            });
+        const myHttpClient = this.axios.create({
+            xsrfHeaderName: 'X-CSRF-Token',
+            withCredentials: true,
+        });
+        const requestItem = new URLSearchParams();
+        requestItem.append('token', 'get_item');
+        await myHttpClient.post(methods.apiUrl.url + 'admin.php', requestItem).then(res => {
+            self.allItem = res.data;
+        });
     },
     methods: {
         changeTab: function() {
@@ -72,5 +74,4 @@ export default {
 .admin {
     margin: 0 auto;
 }
-
 </style>

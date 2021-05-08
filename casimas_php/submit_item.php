@@ -22,29 +22,29 @@ $capsule->bootEloquent();
 $pdo = connect_to_db();
 
 //ファイル処理
-$file = $_FILES;
-$item_img = array();
-foreach ($file as $file_data) {
-    if (!isset($file_data) && $file_data['error'] != 0) {
-        exit('Error:画像が送信されていません');
-    } else {
-        $uploaded_file_name = $file_data['name'];
-        $extension = pathinfo($uploaded_file_name, PATHINFO_EXTENSION);
-        $temp_path = $file_data['tmp_name'];
-        $directory_path = 'item_img/';  //画像保存ファイル
-        $unique_name = date('YmdHis') . random_string(16) . "." . $extension;   //保存した日付とランダム文字列.拡張子
-        $filename_to_save = $directory_path . $unique_name;     //保存先のパス
+// $file = $_FILES;
+// $item_img = array();
+// foreach ($file as $file_data) {
+//     if (!isset($file_data) && $file_data['error'] != 0) {
+//         exit('Error:画像が送信されていません');
+//     } else {
+//         $uploaded_file_name = $file_data['name'];
+//         $extension = pathinfo($uploaded_file_name, PATHINFO_EXTENSION);
+//         $temp_path = $file_data['tmp_name'];
+//         $directory_path = 'item_img/';  //画像保存ファイル
+//         $unique_name = date('YmdHis') . random_string(16) . "." . $extension;   //保存した日付とランダム文字列.拡張子
+//         $filename_to_save = $directory_path . $unique_name;     //保存先のパス
 
-        if (!is_uploaded_file($temp_path)) {
-            exit('Error:画像がありません');
-        } elseif (!move_uploaded_file($temp_path, $filename_to_save)) {
-            exit('Error:アップロードできませんでした');
-        } else {
-            chmod($filename_to_save, 0644); // 権限の変更
-            $item_img[]=$filename_to_save;
-        }
-    }
-}
+//         if (!is_uploaded_file($temp_path)) {
+//             exit('Error:画像がありません');
+//         } elseif (!move_uploaded_file($temp_path, $filename_to_save)) {
+//             exit('Error:アップロードできませんでした');
+//         } else {
+//             chmod($filename_to_save, 0644); // 権限の変更
+//             $item_img[]=$filename_to_save;
+//         }
+//     }
+// }
 // var_dump($item_img);
 //     exit();
 
@@ -92,46 +92,46 @@ if (isset($_POST)) {
             $error = $stmt->errorInfo();
             // データ登録失敗次にエラーを表示
             exit('sqlError:' . $error[2]);
-        } else {
-            switch (count($item_img)) {
-                case 1:
-                    $sql = 'INSERT INTO photo(photo_id,item_id,photo1) VALUES (null,:item_id,:photo1)';
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
-                    $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
-                    break;
-                case 2:
-                    $sql = 'INSERT INTO photo(photo_id,item_id,photo1,photo2) VALUES (null,:item_id,:photo1,:photo2)';
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
-                    $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
-                    $stmt->bindValue(':photo2', $item_img[1], PDO::PARAM_STR);
-                    break;
-                case 3:
-                    $sql = 'INSERT INTO photo(photo_id,item_id,photo1,photo2,photo3) VALUES (null,:item_id,:photo1,:photo2,:photo3)';
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
-                    $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
-                    $stmt->bindValue(':photo2', $item_img[1], PDO::PARAM_STR);
-                    $stmt->bindValue(':photo3', $item_img[2], PDO::PARAM_STR);
-                break;
-                case 4:
-                    $sql = 'INSERT INTO photo(photo_id,item_id,photo1,photo2,photo3,photo4) VALUES (null,:item_id,:photo1,:photo2,:photo3,:photo4)';
-                    $stmt = $pdo->prepare($sql);
-                    $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
-                    $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
-                    $stmt->bindValue(':photo2', $item_img[1], PDO::PARAM_STR);
-                    $stmt->bindValue(':photo3', $item_img[2], PDO::PARAM_STR);
-                    $stmt->bindValue(':photo4', $item_img[3], PDO::PARAM_STR);
-                    break;
-            }
-            $status = $stmt->execute();
+        // } else {
+        //     switch (count($item_img)) {
+        //         case 1:
+        //             $sql = 'INSERT INTO photo(photo_id,item_id,photo1) VALUES (null,:item_id,:photo1)';
+        //             $stmt = $pdo->prepare($sql);
+        //             $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
+        //             break;
+        //         case 2:
+        //             $sql = 'INSERT INTO photo(photo_id,item_id,photo1,photo2) VALUES (null,:item_id,:photo1,:photo2)';
+        //             $stmt = $pdo->prepare($sql);
+        //             $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo2', $item_img[1], PDO::PARAM_STR);
+        //             break;
+        //         case 3:
+        //             $sql = 'INSERT INTO photo(photo_id,item_id,photo1,photo2,photo3) VALUES (null,:item_id,:photo1,:photo2,:photo3)';
+        //             $stmt = $pdo->prepare($sql);
+        //             $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo2', $item_img[1], PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo3', $item_img[2], PDO::PARAM_STR);
+        //         break;
+        //         case 4:
+        //             $sql = 'INSERT INTO photo(photo_id,item_id,photo1,photo2,photo3,photo4) VALUES (null,:item_id,:photo1,:photo2,:photo3,:photo4)';
+        //             $stmt = $pdo->prepare($sql);
+        //             $stmt->bindValue(':item_id', $item_id, PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo1', $item_img[0], PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo2', $item_img[1], PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo3', $item_img[2], PDO::PARAM_STR);
+        //             $stmt->bindValue(':photo4', $item_img[3], PDO::PARAM_STR);
+        //             break;
+        //     }
+        //     $status = $stmt->execute();
 
-            if ($status == false) {
-                $error = $stmt->errorInfo();
-                // データ登録失敗次にエラーを表示
-                exit('sqlError:' . $error[2]);
-            }
-        }
+        //     if ($status == false) {
+        //         $error = $stmt->errorInfo();
+        //         // データ登録失敗次にエラーを表示
+        //         exit('sqlError:' . $error[2]);
+        //     }
+         }
     }
 }

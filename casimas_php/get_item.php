@@ -27,7 +27,7 @@ function get_all_item()
     $pdo = connect_to_db();
 
     //商品情報
-    $sql = 'SELECT item.item_id,rental_state.rental_state_id,seller_id,item_name,item_introductoin,brand,purchase_judg, price_1m,price_1w,price_purchase,category_content,photo1,photo2,photo3,photo4 FROM ((((item LEFT OUTER JOIN price ON item.item_id = price.item_id) LEFT OUTER JOIN category ON item.category_id = category.category_id ) LEFT OUTER JOIN photo ON item.item_id = photo.item_id) LEFT OUTER JOIN rental_state ON item.item_id = rental_state.item_id) WHERE item.is_deleted=0';
+    $sql = 'SELECT item.item_id,rental_state.rental_state_id,seller_id,item_name,item_introductoin,brand,purchase_judg, price_1m,price_1w,price_purchase,category_content,photo1,photo2,photo3,photo4 FROM ((((item LEFT OUTER JOIN price ON item.item_id = price.item_id) LEFT OUTER JOIN category ON item.category_id = category.category_id ) LEFT OUTER JOIN photo ON item.item_id = photo.item_id) LEFT OUTER JOIN rental_state ON item.item_id = rental_state.item_id) WHERE item.is_deleted=0 AND item.item_id = photo.item_id';
     $stmt = $pdo->prepare($sql);
     $status = $stmt->execute();
 
@@ -36,7 +36,9 @@ function get_all_item()
         // データ登録失敗次にエラーを表示
         exit('sqlError:' . $error[2]);
     } else {
+
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }

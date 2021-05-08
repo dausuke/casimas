@@ -7,7 +7,7 @@
                     <router-link to="/category" class="my-lg-3 ml-3">
                         <button type="button" class="btn btn-outline-secondary link-btn">カテゴリー</button>
                     </router-link>
-                    <router-link to="/purchase" class="my-lg-3 ml-3">
+                    <router-link to="/coordinate" class="my-lg-3 ml-3">
                         <button type="button" class="btn btn-outline-secondary link-btn">コーディネート</button>
                     </router-link>
                     <router-link to="/purchase" class="my-lg-3 ml-3">

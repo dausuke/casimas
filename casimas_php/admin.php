@@ -116,21 +116,53 @@ function up_coodinate_img($item_id_str)
             }
         }
     }
-    foreach ($item_id as $value) {
-        
-        $sql = 'INSERT INTO coodinate(coordinate_id,coodinate_img,item_id,created_at,updated_at) VALUES (null,:coodinate_img,:item_id,sysdate(),sysdate())';
-        $stmt = $pdo->prepare($sql);
-        //バインド変数設定
-        $stmt->bindValue(':coodinate_img', $filename_to_save, PDO::PARAM_STR);
-        $stmt->bindValue(':item_id', $value, PDO::PARAM_STR);
+    $sql = 'INSERT INTO coodinate(coordinate_id,coodinate_img,created_at,updated_at) VALUES (null,:coodinate_img,sysdate(),sysdate())';
+    $stmt = $pdo->prepare($sql);
+    //バインド変数設定
+    $stmt->bindValue(':coodinate_img', $filename_to_save, PDO::PARAM_STR);
 
-        $status = $stmt->execute();
+    $status = $stmt->execute();
 
-        if ($status == false) {
-            $error = $stmt->errorInfo();
-            // データ登録失敗次にエラーを表示
-            exit('sqlError:' . $error[2]);
+    if ($status == false) {
+        $error = $stmt->errorInfo();
+        // データ登録失敗次にエラーを表示
+        exit('sqlError:' . $error[2]);
+    } else {
+        $coodinate_id = $pdo->lastInsertId();
+        foreach ($item_id as $value) {
+            $sql = 'INSERT INTO coodinate_item(coodinate_img_id,coodinate_id,item_id) VALUES (null,:coodinate_id,:item_id)';
+            $stmt = $pdo->prepare($sql);
+            //バインド変数設定
+            $stmt->bindValue(':coodinate_id', $coodinate_id, PDO::PARAM_STR);
+            $stmt->bindValue(':item_id', $value, PDO::PARAM_STR);
+
+            $status = $stmt->execute();
+
+            if ($status == false) {
+                $error = $stmt->errorInfo();
+                // データ登録失敗次にエラーを表示
+                exit('sqlError:' . $error[2]);
+            }
         }
+    }
+}
+function get_item()
+{
+    $pdo = connect_to_db();
+
+    //商品情報
+    $sql = "SELECT item_id,item_name FROM item WHERE item.is_deleted=0";
+
+    $stmt = $pdo->prepare($sql);
+    $status = $stmt->execute();
+
+    if ($status == false) {
+        $error = $stmt->errorInfo();
+        // データ登録失敗次にエラーを表示
+        exit('sqlError:' . $error[2]);
+    } else {
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($result, JSON_UNESCAPED_UNICODE);
     }
 }
 if (filter_input(INPUT_POST, 'token')) {
@@ -138,5 +170,7 @@ if (filter_input(INPUT_POST, 'token')) {
         up_item_img($_POST['item_id']);
     } elseif ($_POST['token']=='coodinate') {
         up_coodinate_img($_POST['item_id']);
+    } elseif ($_POST['token']=='get_item') {
+        get_item($_POST['item_id']);
     }
 }

@@ -16,6 +16,7 @@ import category from '../views/after_login/category';
 import noticeContent from '../components/noticeContent';
 import requestStateContent from '../components/requestStateContent';
 import purchase from '../views/after_login/purchase';
+import coordinate from '../views/after_login/coodinate'
 
 //マイページ内
 import profile from '../views/after_login/profile';
@@ -80,6 +81,12 @@ const routes = [
         path: '/purchase',
         name: 'purchase',
         component: purchase,
+    },
+    {
+        //コーディネート
+        path: '/coordinate',
+        name: 'coordinate',
+        component: coordinate,
     },
     {
         //通知
