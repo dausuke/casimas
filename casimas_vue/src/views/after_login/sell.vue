@@ -7,63 +7,6 @@
                     <div class="row justify-content-center">
                         <div class="form-group col-12">
                             <div class="label-area d-flex">
-                                <label>出品画像</label>
-                                <p class="label-attention">必須</p>
-                            </div>
-                            <p>最大4枚までアップロードできます</p>
-                            <div class="upfile-area p-0 d-flex justify-content-center">
-                                <div class="pleview-area" v-show="itemData.photo[0] != null">
-                                    <div class="pleview-area__content" id="pleview1"></div>
-                                    <div class="m-0 d-flex justify-content-center align-items-center delete-pleview-area__content" @click="deleteFile(1)">
-                                        削除
-                                    </div>
-                                </div>
-                                <div class="pleview-area" v-show="itemData.photo[1] != null">
-                                    <div class="pleview-area__content" id="pleview2"></div>
-                                    <div class="m-0 d-flex justify-content-center align-items-center delete-pleview-area__content" @click="deleteFile(2)">
-                                        削除
-                                    </div>
-                                </div>
-                                <div class="pleview-area" v-show="itemData.photo[2] != null">
-                                    <div class="pleview-area__content" id="pleview3"></div>
-                                    <div class="m-0 d-flex justify-content-center align-items-center delete-pleview-area__content" @click="deleteFile(3)">
-                                        削除
-                                    </div>
-                                </div>
-                                <div class="pleview-area" v-show="itemData.photo[3] != null">
-                                    <div class="pleview-area__content" id="pleview4"></div>
-                                    <div class="m-0 d-flex justify-content-center align-items-center delete-pleview-area__content" @click="deleteFile(4)">
-                                        削除
-                                    </div>
-                                </div>
-                                <div class="selling-img-upload col-12 p-0 d-flex justify-content-center align-items-center">
-                                    <label for="sellingImg" class=" d-flex justify-content-center align-items-center flex-column w-100 h-100 m-0">
-                                        <input
-                                            type="file"
-                                            id="sellingImg"
-                                            multiple
-                                            accept="image/png,image/jpeg"
-                                            ref="preview"
-                                            style="display:none;"
-                                            @change="uploadFile"
-                                        />
-                                        <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M24.7 0C26.64 0.0199778 28.22 1.01887 29.14 2.81687C29.3775 3.29134 29.7088 3.98432 30.0556 4.71535L30.4744 5.59929L30.68 6.0333L30.88 6.47281C30.96 6.61265 31.1 6.71254 31.28 6.71254C36.08 6.71254 40 10.6282 40 15.4229V27.2897C40 32.0844 36.08 36 31.28 36H8.72C3.9 36 0 32.0844 0 27.2897V15.4229C0 10.6282 3.9 6.71254 8.72 6.71254C8.88 6.71254 9.04 6.63263 9.1 6.47281L9.22 6.23307C9.78 5.05438 10.46 3.61598 10.86 2.81687C11.78 1.01887 13.34 0.0199778 15.28 0H24.7ZM20 12.8058C17.9 12.8058 15.92 13.6249 14.42 15.1232C12.94 16.6215 12.12 18.5794 12.14 20.657C12.14 22.7547 12.96 24.7125 14.44 26.2109C15.94 27.6892 17.9 28.5083 20 28.5083C22.16 28.5083 24.12 27.6293 25.54 26.2109C26.96 24.7925 27.84 22.8346 27.86 20.657C27.86 18.5794 27.04 16.6016 25.56 15.1032C24.08 13.6249 22.1 12.8058 20 12.8058ZM20 15.8024C21.3 15.8024 22.52 16.3019 23.44 17.2209C24.36 18.1398 24.86 19.3585 24.86 20.657C24.84 23.3341 22.68 25.5117 20 25.5117C18.7 25.5117 17.48 25.0122 16.56 24.0932C15.64 23.1743 15.14 21.9556 15.14 20.657V20.6371C15.12 19.3785 15.62 18.1598 16.54 17.2408C17.48 16.3019 18.7 15.8024 20 15.8024ZM31.22 12.3263C30.22 12.3263 29.42 13.1454 29.42 14.1443C29.42 15.1432 30.22 15.9423 31.22 15.9423C32.22 15.9423 33.04 15.1432 33.04 14.1443C33.04 13.1454 32.22 12.3263 31.22 12.3263Z"
-                                                fill="#200E32"
-                                            />
-                                        </svg>
-                                        <p v-if="show == 'none'" class="mt-4">
-                                            クリックしてファイルをアップロード
-                                        </p>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <div class="form-group col-12">
-                            <div class="label-area d-flex">
                                 <label for="itemName">商品名</label>
                                 <p class="label-attention">必須</p>
                             </div>
@@ -237,86 +180,11 @@ export default {
                 purchaseJudg: false,
                 price1w: null,
                 price1m: null,
-                photo: [],
             },
-            itemPhoto: {},
-            fileCount: 0,
-            show: 'none',
         };
     },
     created: function() {},
     methods: {
-        uploadFile() {
-            switch (this.fileCount) {
-                case 0: {
-                    const file = this.$refs.preview.files[0];
-                    this.itemData.photo[0] = file;
-                    this.itemPhoto.pleview1 = URL.createObjectURL(file);
-                    document.getElementById('pleview1').style.backgroundImage = 'url(' + this.itemPhoto.pleview1 + ')';
-                    this.fileCount++;
-                    this.show = 'photo1';
-                    break;
-                }
-                case 1: {
-                    const file = this.$refs.preview.files[0];
-                    this.itemData.photo[1] = file;
-                    this.itemPhoto.pleview2 = URL.createObjectURL(file);
-                    document.getElementById('pleview2').style.backgroundImage = 'url(' + this.itemPhoto.pleview2 + ')';
-                    this.fileCount++;
-                    this.show = 'photo2';
-                    break;
-                }
-                case 2: {
-                    const file = this.$refs.preview.files[0];
-                    this.itemData.photo[2] = file;
-                    this.itemPhoto.pleview3 = URL.createObjectURL(file);
-                    document.getElementById('pleview3').style.backgroundImage = 'url(' + this.itemPhoto.pleview3 + ')';
-                    this.fileCount++;
-                    this.show = 'photo3';
-                    break;
-                }
-                case 3: {
-                    const file = this.$refs.preview.files[0];
-                    this.itemData.photo[3] = file;
-                    this.itemPhoto.pleview4 = URL.createObjectURL(file);
-                    document.getElementById('pleview4').style.backgroundImage = 'url(' + this.itemPhoto.pleview4 + ')';
-                    this.fileCount++;
-                    this.show = 'photo4';
-                    break;
-                }
-            }
-        },
-        deleteFile(file) {
-            switch (file) {
-                case 1:
-                    delete this.itemPhoto.pleview1;
-                    delete this.itemData.photo[0];
-                    this.fileCount = 0;
-                    this.show = 'photo4';
-                    break;
-                case 2:
-                    delete this.itemPhoto.pleview2;
-                    delete this.itemData.photo[1];
-
-                    this.fileCount = 1;
-                    this.show = 'photo3';
-                    break;
-                case 3:
-                    delete this.itemPhoto.pleview3;
-                    delete this.itemData.photo[2];
-
-                    this.fileCount = 2;
-                    this.show = 'photo2';
-                    break;
-                case 4:
-                    delete this.itemPhoto.pleview4;
-                    delete this.itemData.photo[3];
-
-                    this.fileCount = 3;
-                    this.show = 'photo1';
-                    break;
-            }
-        },
         submititem: function() {
             const self = this
             const baseUrl = methods.apiUrl.url;
@@ -324,19 +192,7 @@ export default {
                 xsrfHeaderName: 'X-CSRF-Token',
                 withCredentials: true,
             });
-            const upItemData = new FormData();
-            if (this.itemData.photo[0]) {
-                upItemData.append('photo1', this.itemData.photo[0]);
-            }
-            if (this.itemData.photo[1]) {
-                upItemData.append('photo2', this.itemData.photo[1]);
-            }
-            if (this.itemData.photo[2]) {
-                upItemData.append('photo3', this.itemData.photo[2]);
-            }
-            if (this.itemData.photo[3]) {
-                upItemData.append('photo4', this.itemData.photo[3]);
-            }
+            const upItemData = new URLSearchParams();
             upItemData.append('item_name', this.itemData.name);
             upItemData.append('item_introduction', this.itemData.description);
             upItemData.append('brand', this.itemData.brand);
@@ -349,26 +205,12 @@ export default {
                 upItemData.append('price_purchase', this.itemData.pricePurchase);
             }
             myHttpClient
-                .post(baseUrl + 'submit_item.php', upItemData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                })
+                .post(baseUrl + 'submit_item.php', upItemData)
                 .then(function(res) {
                     console.log(res)
                     alert('商品を出品しました')
                     self.$router.push({ name: 'Home' })
                 });
-        },
-    },
-    watch: {
-        show: {
-            deep: true,
-            handler: function() {
-                if (!this.itemPhoto.pleview1 && !this.itemPhoto.pleview2 && !this.itemPhoto.pleview3 && !this.itemPhoto.pleview4) {
-                    this.show = 'none';
-                }
-            },
         },
     },
 };
@@ -400,44 +242,5 @@ h1 {
     border-radius: 2px;
     margin-left: 8px;
 }
-.upfile-area {
-    overflow: hidden !important;
-}
-.selling-img-upload {
-    background-color: rgb(245, 245, 245);
-    border: 1px dashed rgb(204, 204, 204);
-    cursor: pointer;
-    height: 120px;
-    flex-wrap: wrap;
-    position: relative;
-    transition: all 0.5s ease-out 0s;
-    flex: 1 1 0%;
-    overflow: hidden !important;
-}
-.selling-img-upload label {
-    overflow: hidden !important;
-}
-.selling-img-upload p {
-    font-size: 12px;
-}
-.pleview-area {
-    margin-right: 8px;
-    width: 80px;
-    height: 120px;
-    background-color: rgb(245, 245, 245);
-}
-.pleview-area__content {
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: contain;
-    height: 80px;
-    width: 70px;
-    margin: 5px;
-}
-.delete-pleview-area__content {
-    height: 20px;
-    width: 80px;
-    border-top: solid 1px rgb(204, 204, 204);
-    padding: 5px 0 0 0;
-}
+
 </style>

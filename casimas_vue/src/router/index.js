@@ -13,15 +13,18 @@ import notice from '../views/after_login/notice';
 import item from '../views/after_login/item';
 import editItem from '../views/after_login/editItem';
 import category from '../views/after_login/category';
-import noticeContent from '../components/noticeContent'
-import requestStateContent from '../components/requestStateContent'
-import purchase from '../views/after_login/purchase'
+import noticeContent from '../components/noticeContent';
+import requestStateContent from '../components/requestStateContent';
+import purchase from '../views/after_login/purchase';
 
 //マイページ内
 import profile from '../views/after_login/profile';
 import account from '../views/after_login/account';
 import itemSelling from '../views/after_login/itemSelling';
 import itemIsRental from '../views/after_login/itemIsRental';
+
+//管理者ページ
+import admin from '../views/admin';
 
 Vue.use(VueRouter);
 
@@ -102,7 +105,7 @@ const routes = [
         name: 'noticeContent',
         component: noticeContent,
     },
-        {
+    {
         //レンタル希望
         path: '/requestStateContent',
         name: 'requestStateContent',
@@ -129,6 +132,12 @@ const routes = [
         path: '/itemIsRental',
         name: 'itemIsRental',
         component: itemIsRental,
+    },
+    //管理者ページ
+    {
+        path: '/admin',
+        name: 'admin',
+        component: admin,
     },
 ];
 

@@ -94,26 +94,28 @@ export default {
     },
     methods: {
         submitForm: function() {
-            const self = this;
-            const baseUrl = methods.apiUrl.url;
-            const myHttpClient = this.axios.create({
-                xsrfHeaderName: 'X-CSRF-Token',
-                withCredentials: true,
-            });
-            const user_data = new URLSearchParams();
-            user_data.append('mail', this.useraData.mail);
-            user_data.append('pass', this.useraData.pass);
-            user_data.append('token', this.useraData.token);
-            myHttpClient
-                .post(baseUrl+'auth.php', user_data)
-                .then(function(res) {
-                    console.log(res.data);
-                    self.responsData = res.data;
-                })
-                .catch(function() {})
-                .finally(function() {});
-
-            //console.log(this.responsData)
+            if (this.useraData.mail == 'admin@admin.com' && this.useraData.pass == 'adminadmin') {
+                this.$router.push('/admin')
+            } else {
+                const self = this;
+                const baseUrl = methods.apiUrl.url;
+                const myHttpClient = this.axios.create({
+                    xsrfHeaderName: 'X-CSRF-Token',
+                    withCredentials: true,
+                });
+                const user_data = new URLSearchParams();
+                user_data.append('mail', this.useraData.mail);
+                user_data.append('pass', this.useraData.pass);
+                user_data.append('token', this.useraData.token);
+                myHttpClient
+                    .post(baseUrl + 'auth.php', user_data)
+                    .then(function(res) {
+                        console.log(res.data);
+                        self.responsData = res.data;
+                    })
+                    .catch(function() {})
+                    .finally(function() {});
+            }
         },
     },
 
